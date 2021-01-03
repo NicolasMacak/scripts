@@ -16,7 +16,7 @@ public class ItemManagerController : MonoBehaviour
     private void initializeAllItems()
     {
         // Primary items
-         items.Add("Syringe", new InteractItem("Syringe", "Zahodená vakcína", InteractItem.Types.PRIMARY, InteractItem.States.LOCKED));
+         items.Add(Constants.interactObjectNames.SYRINGE, new InteractItem(Constants.interactObjectNames.SYRINGE, "Zahodená vakcína", InteractItem.Types.PRIMARY, InteractItem.States.LOCKED));
 
         // Secondary items
         // items.Add("Synerge", new InteractItem("Zahodená vakcína", InteractItem.Types.PRIMARY, InteractItem.States.LOCKED));
@@ -28,23 +28,13 @@ public class ItemManagerController : MonoBehaviour
 
     public void addToInventory(string objectName)
     {
-         print(objectName);
-        print(items[objectName].state);
-        items[objectName].state = InteractItem.States.OWNED;
-        print(items[objectName].state);
+        items[objectName].state = InteractItem.States.USABLE;
         Destroy(GameObject.Find(objectName));
     }
 
     public InteractItem getItem(string name)
     {
        return items.ContainsKey(name) ? items[name]: null;
-    }
-
-    public void removeItem(string objectName)
-    {
-        print(items[name].state);
-        Destroy(GameObject.Find(objectName));
-        print(items[name].state);
     }
 
     public void isOwned(GameObject itemToAdd)

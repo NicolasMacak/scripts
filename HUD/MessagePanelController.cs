@@ -5,11 +5,12 @@ using TMPro;
 
 public class MessagePanelController : MonoBehaviour
 {
-    class messages
-    {
-      public const string PICKUP = "Zobrať (E)";
-      public const string READ = "Prečítať (E)";
-    }
+    //class messages
+    //{
+    //  public const string PICKUP = "Zobrať (E)";
+    //  public const string READ = "Prečítať (E)";
+    //}
+    TextMessagesManager textMessageManager = new TextMessagesManager();
 
     public TextMeshProUGUI message;
     // Start is called before the first frame update
@@ -19,27 +20,47 @@ public class MessagePanelController : MonoBehaviour
         message.text = "";
     }
 
-    public void displayMessage(int interactItemType, string name)
+    /// <summary>Returns message for locked items</summary>
+    public void displayMessage(int interactItemState, string name)
     {
         this.gameObject.SetActive(true);
-        
-        message.text = name + " " + getMessageByType(interactItemType);
-    }
 
-    private string getMessageByType(int interactItemType)
-    {
-        switch (interactItemType)
+        string textToDisplay = "";
+
+        switch (interactItemState)
         {
-            case InteractItem.Types.PRIMARY:
-            case InteractItem.Types.SECONDARY:
-                return messages.PICKUP;
+            case InteractItem.States.LOCKED:
+                textToDisplay = textMessageManager.getLocked(name);
+                break;
 
-            case InteractItem.Types.READABLE:
-                return messages.READ;
+            case InteractItem.States.PICKABLE:
+                textToDisplay = textMessageManager.getPickup(name);
+                break;
+
+            case InteractItem.States.USABLE:
+                textToDisplay = textMessageManager.getUse(name);
+                break;
         }
 
-        return "";
+        print(interactItemState);
+        print(textToDisplay);
+        message.text = textToDisplay;
     }
+
+    //private string getMessageByType(int interactItemType)
+    //{
+    //    switch (interactItemType)
+    //    {
+    //        case InteractItem.Types.PRIMARY:
+    //        case InteractItem.Types.SECONDARY:
+    //            return messages.PICKUP;
+
+    //        case InteractItem.Types.READABLE:
+    //            return messages.READ;
+    //    }
+
+    //    return "";
+    //}
 
     public void hideMessage()
     {

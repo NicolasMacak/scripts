@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class Constants
 {
+    public class interactObjectNames
+    {
+        public const string SYRINGE = "Syringe";
+    }
+    public class textSuffixes
+    {
+        public const string PICK_UP = "Zobrať (E)";
+        public const string USE = "Použiť (E)";
+        public const string READ = "Prečítať (E)";
+    }
     // Start is called before the first frame update
-    public const string PICK_UP_TEXT = "Zobrať (E)";
-    public const string READ_TEXT = "Prečítať (E)";
+    
 
 
 }

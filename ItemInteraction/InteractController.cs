@@ -6,7 +6,7 @@ public class InteractController : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public ItemManagerController itemManager; //= GetComponent<ItemManagerController>();// new ItemManagerController();
+    public ItemManagerController itemManager;
     public MessagePanelController messagePanel;
 
     private InteractItem itemInRange;
@@ -22,18 +22,24 @@ public class InteractController : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.E))
         {
-            addItemToInventory();
+            if (itemInRange.state == InteractItem.States.PICKABLE || itemInRange.state == InteractItem.States.LOCKED) // remove Locked
+            {
+                itemManager.addToInventory(itemInRange.objectName);
+            }
+            else if (itemInRange.state == InteractItem.States.USABLE)
+            {
+                // itemManager.useItem
+            }
+            
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        itemInRange = itemManager.getItem(other.gameObject.name); // check ci je to interactableItem, ci sa taky item nachadza 
-        print(itemInRange);
+        itemInRange = itemManager.getItem(other.gameObject.name);
         if (itemInRange != null)
         {
-            // itemInRange = synerge;
-            messagePanel.displayMessage(itemInRange.type, itemInRange.title);
+            messagePanel.displayMessage(itemInRange.state, itemInRange.objectName);
         }
             
     }
@@ -45,7 +51,7 @@ public class InteractController : MonoBehaviour
             
     }
 
-    private void addItemToInventory()
+    private void addItemToInventory(string objectName)
     {
         itemManager.addToInventory("Syringe");
         messagePanel.hideMessage();

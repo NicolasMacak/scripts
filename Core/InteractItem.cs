@@ -22,7 +22,7 @@ public class InteractItem
     {
         public const int LOCKED = 0;
         public const int PICKABLE = 1;
-        public const int OWNED = 2;
+        public const int USABLE = 2;
         public const int REMOVED = 3;
     }
 
