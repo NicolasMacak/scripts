@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using static InteractItem;
 
 public class MessagePanelController : MonoBehaviour
 {
@@ -21,46 +22,37 @@ public class MessagePanelController : MonoBehaviour
     }
 
     /// <summary>Returns message for locked items</summary>
-    public void displayMessage(int interactItemState, string name)
+    public void displayMessage(InteractItem interactItem)
     {
         this.gameObject.SetActive(true);
 
         string textToDisplay = "";
 
-        switch (interactItemState)
+        if(interactItem.category == ItemCategory.READABLE)
         {
-            case InteractItem.States.LOCKED:
-                textToDisplay = textMessageManager.getLocked(name);
-                break;
+            textToDisplay = interactItem.title + Constants.textSuffixes.READ;
+        }
+        else
+        {
+            switch (interactItem.state)
+            {
+                case InteractItem.ItemState.DISABLED:
+                    textToDisplay = textMessageManager.getLocked(interactItem.objectName);
+                    break;
 
-            case InteractItem.States.PICKABLE:
-                textToDisplay = textMessageManager.getPickup(name);
-                break;
+                case InteractItem.ItemState.ENABLED:
+                    textToDisplay = textMessageManager.getPickup(interactItem.objectName);
+                    break;
 
-            case InteractItem.States.USABLE:
-                textToDisplay = textMessageManager.getUse(name);
-                break;
+                case InteractItem.ItemState.USABLE:
+                    textToDisplay = textMessageManager.getUse(interactItem.objectName);
+                    break;
+            }
         }
 
-        print(interactItemState);
         print(textToDisplay);
         message.text = textToDisplay;
     }
-
-    //private string getMessageByType(int interactItemType)
-    //{
-    //    switch (interactItemType)
-    //    {
-    //        case InteractItem.Types.PRIMARY:
-    //        case InteractItem.Types.SECONDARY:
-    //            return messages.PICKUP;
-
-    //        case InteractItem.Types.READABLE:
-    //            return messages.READ;
-    //    }
-
-    //    return "";
-    //}
 
     public void hideMessage()
     {
