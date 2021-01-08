@@ -23,19 +23,22 @@ public class NoteController : MonoBehaviour
 
     private string getNote(string noteName)
     {
-        return notes.ContainsKey(noteName) ? notes[noteName] : "dd";
+        return notes.ContainsKey(noteName) ? notes[noteName] : "";
     }
 
     /// <summary>Displays note for user</summary>
-    public void displayNote(string noteName)
+    public bool displayNote(string noteName)
     {
         this.gameObject.SetActive(true);
         note.text = getNote(noteName);
+        Time.timeScale = 0; // stop game while reading
+        return true;
     }
 
-    public void hideNote()
+    public bool hideNote()
     {
         this.gameObject.SetActive(false);
-
+        Time.timeScale = 1;
+        return false;
     }
 }

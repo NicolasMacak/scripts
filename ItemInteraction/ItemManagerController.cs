@@ -19,8 +19,8 @@ public class ItemManagerController : MonoBehaviour
     private void initializeAllItems()
     {
         // Primary items
-        items.Add(Constants.interactObjectNames.SYRINGE, new InteractItem(Constants.interactObjectNames.SYRINGE, "Zahodená vakcína", ItemCategory.PICKABLE, ItemState.DISABLED));
-        items.Add("SyringeOltar", new InteractItem("SyringeOltar", "Oltár Zahodená vakcína", ItemCategory.OLTAR, ItemState.ENABLED));
+        items.Add(Constants.interactObjectNames.SYRINGE, new InteractItem(interactObjectNames.SYRINGE, "Zahodená vakcína", ItemCategory.PICKABLE, ItemState.ENABLED, null));
+        items.Add("SyringeOltar", new InteractItem("SyringeOltar", "Oltár Zahodená vakcína", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.SYRINGE));
 
         items.Add(interactObjectNames.NOTE01, new InteractItem(interactObjectNames.NOTE01, "Poznámka"));
 
@@ -49,43 +49,42 @@ public class ItemManagerController : MonoBehaviour
     
     public void interactWithItem(InteractItem interactItem)
     {
+        if (!isDemandItemOwned(interactItem.demandItem))
+        {
+            print(interactItem.demandItem + " note owned");
+            return;
+        }
+
         switch (interactItem.category)
         {
-            case InteractItem.ItemCategory.OLTAR:
+            case ItemCategory.OLTAR:
                 interactWithOltar(interactItem.objectName);
                 break;
 
-            case InteractItem.ItemCategory.PICKABLE:
+            case ItemCategory.PICKABLE:
                 pickItem(interactItem.objectName);
                 break;
 
-            case InteractItem.ItemCategory.ENABLER:
+            case ItemCategory.ENABLER:
                 enableItem(interactItem.objectName);
                 break;
-
-            case InteractItem.ItemCategory.READABLE:
-                interactWithReadable(interactItem.objectName);
-                break;
         }
+    }
+
+    /// <summary>
+    /// Checks if demand item is in the inventory. Return true if item is owned or if there is no item to be demanded. False otherwise.
+    /// </summary>
+    /// <param name="demandItemName"></param>
+    /// <returns></returns>
+    private bool isDemandItemOwned(string demandItemName)
+    {
+        return demandItemName != null && items.ContainsKey(demandItemName) ? items[demandItemName].state == ItemState.USABLE : true;
     }
 
     //might be renamed to pillar 
     private void interactWithOltar(string objectName)
     {   
         Help.activateOltarChild(objectName); //place item on pillar. Spawn items to the game
-    }
-
-    private void interactWithPicklable(string objectName)
-    {
-        //add item to inventory
-        //Destroy item
-
-
-    }
-
-    private void interactWithReadable(string objectName)
-    {
-        // read note
     }
 
     private void pickItem(string objectName)
@@ -100,4 +99,5 @@ public class ItemManagerController : MonoBehaviour
         //itemToEnable+lasers - disable 
         // disableColider
     }
+
 }

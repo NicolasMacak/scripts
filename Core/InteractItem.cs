@@ -44,12 +44,13 @@ public class InteractItem
     //        public const int REMOVED = 3; // item is removed
     //    }
 
-    public InteractItem(string objectName, string title, ItemCategory type, ItemState state)
+    public InteractItem(string objectName, string title, ItemCategory type, ItemState state, string demandItem)
     {
         this.objectName = objectName;
         this.title = title;
         this.category = type;
         this.state = state;
+        this.demandItem = demandItem;
     }
     // READABLE ITEM CONSTRUCTOR
     public InteractItem(string objectName, string title) 

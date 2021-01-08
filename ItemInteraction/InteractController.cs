@@ -29,17 +29,7 @@ public class InteractController : MonoBehaviour
             {
                 if(itemInRange.category == ItemCategory.READABLE)
                 {
-                    if(isPlayerReading)
-                    {
-                        print("tu");
-                        noteManager.hideNote();
-                        isPlayerReading = false;
-                    }
-                    else
-                    {
-                        noteManager.displayNote(itemInRange.objectName);
-                        isPlayerReading = true;
-                    }
+                    isPlayerReading = isPlayerReading ? noteManager.hideNote() : noteManager.displayNote(itemInRange.objectName); // switch between reading state
                 }
                 else
                 {
@@ -81,9 +71,4 @@ public class InteractController : MonoBehaviour
     //    itemManager.addToInventory("Syringe");
     //    messagePanel.hideMessage();
     //}
-
-    private void removeGameObject(string objectName)
-    {
-        Destroy(GameObject.Find(objectName));
-    }
 }

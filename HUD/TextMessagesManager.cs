@@ -12,10 +12,10 @@ public class TextMessagesManager
     public TextMessagesManager()
     {
         impossible.Add(Constants.interactObjectNames.SYRINGE, "Je potrebný scan ruky");
-
         pickup.Add(Constants.interactObjectNames.SYRINGE, "Zahodená vakcína " + Constants.textSuffixes.PICK_UP);
-
         use.Add(Constants.interactObjectNames.SYRINGE, "Zahodená vakcína " + Constants.textSuffixes.USE);
+
+
     }
 
     /// <summary>Returns message for locked items</summary>
