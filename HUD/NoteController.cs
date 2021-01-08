@@ -7,7 +7,7 @@ public class NoteController : MonoBehaviour
 {
     public TextMeshProUGUI note;
 
-    private Dictionary<string, string> notes = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> notes = new Dictionary<string, string>();
     // Start is called before the first frame update
     void Start()
     {
