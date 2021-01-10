@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class SoundController : MonoBehaviour
 {
-
-
-    public Dictionary<string, AudioSource> sounds = new Dictionary<string, AudioSource>();
-
     private AudioSource audioSource;
     private AudioClip audioClip;
-    private string soundPath;
+    public SoundClip[] soundClips;
 
     public enum SoundName
     {
         Pickup,
         put
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        //PlayClip(SoundName.Pickup);
     }
 
     [System.Serializable]
@@ -25,39 +28,31 @@ public class SoundController : MonoBehaviour
         public AudioClip audioClip;
     }
 
-    
-    public SoundClip[] soundClips;
-
-    // Start is called before the first frame update
-    void Start()
+    private AudioClip FindClip(SoundName soundName)
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
-        soundPath = "file://" + Application.streamingAssetsPath + "/Sounds/";
-        StartCoroutine(LoadAudio());
+        foreach(SoundClip soundClip in soundClips)
+        {
+            if(soundClip.soundName == soundName)
+            {
+                return soundClip.audioClip;
+            }
+        }
+        print("No such clip");
+        return null;
     }
 
-    // Update is called once per frame
-    private IEnumerator LoadAudio()
+    public void PlayClip(SoundName soundName)
     {
-        WWW request = GetAudioFromFile(soundPath, "spaceDoor.wav");
-        yield return request;
+        AudioClip audioClip = FindClip(soundName);
 
-        audioClip = request.GetAudioClip();
-
-        PlayAudioFile();
+        if(audioClip != null)
+        {
+            audioSource.clip = audioClip;
+            audioSource.Play();
+        }
     }
 
-    private void PlayAudioFile()
-    {
-        audioSource.clip = audioClip;
-        audioSource.Play();
-    }
 
-    private WWW GetAudioFromFile(string path, string filename)
-    {
-        string audioToLoad = string.Format(path + "{0}", filename);
-        WWW request = new WWW(audioToLoad);
-        return request;
-    }
+
 
 }

@@ -19,8 +19,9 @@ public class ItemManagerController : MonoBehaviour
     private void initializeAllItems()
     {
         // Primary items
-        items.Add(Constants.interactObjectNames.SYRINGE, new InteractItem(interactObjectNames.SYRINGE, "Zahodená vakcína", ItemCategory.PICKABLE, ItemState.ENABLED, null));
+        items.Add(interactObjectNames.SYRINGE, new InteractItem(interactObjectNames.SYRINGE, "Zahodená vakcína", ItemCategory.PICKABLE, ItemState.DISABLED, null));
         items.Add("SyringeOltar", new InteractItem("SyringeOltar", "Oltár Zahodená vakcína", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.SYRINGE));
+        items.Add("SyringeEnabler", new InteractItem("SyringeEnabler", "Enabler vakcína", ItemCategory.ENABLER, ItemState.ENABLED, null));
 
         items.Add(interactObjectNames.NOTE01, new InteractItem(interactObjectNames.NOTE01, "Poznámka"));
 
@@ -81,7 +82,7 @@ public class ItemManagerController : MonoBehaviour
         return demandItemName != null && items.ContainsKey(demandItemName) ? items[demandItemName].state == ItemState.USABLE : true;
     }
 
-    //might be renamed to pillar 
+  
     private void interactWithOltar(string objectName)
     {   
         Help.activateOltarChild(objectName); //place item on pillar. Spawn items to the game
@@ -89,13 +90,15 @@ public class ItemManagerController : MonoBehaviour
 
     private void pickItem(string objectName)
     {
-        items[objectName].state = InteractItem.ItemState.USABLE;
+        items[objectName].state = ItemState.USABLE;
         Destroy(GameObject.Find(objectName));
     }
 
-    private void enableItem(string itemToEnable)
+    private void enableItem(string enablerObjectName)
     {
-        items[itemToEnable].state = InteractItem.ItemState.ENABLED;
+        var itemToEnable = enablerObjectName.Replace(nameSpacesStrings.Enabler, "");
+        print(itemToEnable);
+        items[itemToEnable].state = ItemState.ENABLED;
         //itemToEnable+lasers - disable 
         // disableColider
     }

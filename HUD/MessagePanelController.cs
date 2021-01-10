@@ -36,21 +36,29 @@ public class MessagePanelController : MonoBehaviour
         {
             switch (interactItem.state)
             {
-                case InteractItem.ItemState.DISABLED:
+                case ItemState.DISABLED:
                     textToDisplay = textMessageManager.getLocked(interactItem.objectName);
                     break;
 
-                case InteractItem.ItemState.ENABLED:
+                case ItemState.ENABLED:
                     textToDisplay = textMessageManager.getPickup(interactItem.objectName);
                     break;
 
-                case InteractItem.ItemState.USABLE:
+                case ItemState.USABLE:
                     textToDisplay = textMessageManager.getUse(interactItem.objectName);
                     break;
             }
         }
 
-        print(textToDisplay);
+        if(textToDisplay == "")
+        {
+            print("text este nebol priradeny");
+        }
+        else
+        {
+            print(textToDisplay);
+        }
+        
         message.text = textToDisplay;
     }
 

@@ -7,7 +7,7 @@ public static class Help
 
     public static string getOltarChildName(string oltarName)
     {
-        return Constants.nameSpacesStrings.OLTAR + oltarName.Replace(Constants.nameSpacesStrings.OLTAR, "");
+        return Constants.nameSpacesStrings.Oltar + oltarName.Replace(Constants.nameSpacesStrings.Oltar, "");
     }
 
     public static GameObject FindChild(this GameObject parent, string name)

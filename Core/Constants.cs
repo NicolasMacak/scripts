@@ -19,7 +19,8 @@ public static class Constants
 
     public class nameSpacesStrings
     {
-        public const string OLTAR = "Oltar";
+        public const string Oltar = "Oltar";
+        public const string Enabler = "Enabler";
     }
 
     // Start is called before the first frame update
