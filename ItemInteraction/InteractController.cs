@@ -23,7 +23,7 @@ public class InteractController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        makeInteractableHand();
+        ZaHando();
 
         if (Input.GetKeyUp(KeyCode.E))
         {  
@@ -50,7 +50,7 @@ public class InteractController : MonoBehaviour
         }
     }
 
-    private void makeInteractableHand()
+    private void ZaHando() // ruka
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, 1.5f))

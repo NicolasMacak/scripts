@@ -16,6 +16,7 @@ public class AttackController : MonoBehaviour
 
     private WanderingManagement wanderingAgent;
     private Vector3 currentDestination;
+    private bool wasPlayerSeen;
  
 
     void Start()
@@ -27,27 +28,84 @@ public class AttackController : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
         wanderingAgent = new WanderingManagement();
+        wasPlayerSeen = false;
 
         setWanderingDestination();
+
+        
 
         //wanderingPoints = initializeWanderingPoints();
         //print(wanderingPoints.Remove(wanderingPoints[0]));
         //print(wanderingPoints + "size " + wanderingPoints.Count);
-       // agent.SetDestination(GameObject.Find("semPod").transform.position);
+        // agent.SetDestination(GameObject.Find("semPod").transform.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerInSight) seeingPlayer();
-        else Wander();
+        StartCoroutine(waitSeconds(2f));
+        if (playerInSight) { ChasePlayer(); }
+        else if (wasPlayerSeen) { LookForPlayer(); }
 
-       // print("Distance " + Vector3.Distance(transform.position, player.transform.position));
+        if (!playerInSight) { Wander(); }
+
+        //Wander() vybavené na začiatku
+        //ChasePlayer()
+        //LookForPlayer()
+        //Wander
+
+        //if (playerInSight) selectingAction();
+        //else Wander();
+        //selectingAction();
+
+        // print("Distance " + Vector3.Distance(transform.position, player.transform.position));
+    }
+
+    private void ChasePlayer()
+    {
+        currentDestination = player.transform.position;
+        agent.SetDestination(currentDestination);
+        
+        //setDestination(player.transform.position);
+        transform.LookAt(player.transform.position - player.transform.up);
+    }
+
+    //private bool hasReachedSpotWherePlayerWasLastSeen()
+    //{
+    //    print("destination " + hasReachedDestination());
+    //    //print("wasPlayerSeen " + wasPlayerSeen);
+    //    if (!hasReachedDestination() && wasPlayerSeen)
+    //    {
+    //        return false;
+    //    }
+    //    wasPlayerSeen = false;
+    //    return true;
+    //}
+
+    private void LookForPlayer()
+    {
+        if (!hasReachedDestination()) { return; }
+        
+        wasPlayerSeen = false;
+
+
+        
+
+        //StartCoroutine(waitSeconds(2f));
+
+        
+    }
+
+    private IEnumerator waitSeconds(float seconds)
+    {
+        //print("looking for player");
+        yield return new WaitForSeconds(seconds);
+        print("waiting ended");
     }
 
     private void Wander()
     {
-        if (hasReacheDestination())
+        if (hasReachedDestination())
         {
             setWanderingDestination();
         }
@@ -60,11 +118,6 @@ public class AttackController : MonoBehaviour
         agent.SetDestination(currentDestination);
     }
 
-    private bool hasReacheDestination()
-    {
-        return Vector3.Distance(transform.position, currentDestination) < 2f;
-    }
-
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject == player) EvaluateColisionWithPlayer(other); // if not player, return       
@@ -72,7 +125,7 @@ public class AttackController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == player) PlayerLost(); // if not player, return
+        if (other.gameObject == player) { PlayerLost(); } // if not player, return
     }
 
     private void EvaluateColisionWithPlayer(Collider player)
@@ -87,9 +140,10 @@ public class AttackController : MonoBehaviour
         Vector3 playerDirection = (player.transform.position - player.transform.up) - raycasterPoint;
 
         //Debug.DrawLine(raycasterPoint, (raycasterPoint + direction.normalized));
-        if (isPlayerInFieldOfView(playerDirection))
+        if (isPlayerInFieldOfView(playerDirection) && isPlayerBeingSeen(playerDirection))
         {
-            playerInSight = isPlayerBeingSeen(playerDirection);
+            playerInSight = true;
+            wasPlayerSeen = true;
         }
     }
 
@@ -120,12 +174,9 @@ public class AttackController : MonoBehaviour
         return false;
     }
 
-    private void seeingPlayer()
+    private bool hasReachedDestination()
     {
-        agent.SetDestination(player.transform.position);
-        currentDestination = player.transform.position;
-        //setDestination(player.transform.position);
-        transform.LookAt(player.transform.position - player.transform.up);
+        return Vector3.Distance(transform.position, currentDestination) < 2f;
     }
 
     private bool isPlayerNearby()
