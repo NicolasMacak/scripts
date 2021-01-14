@@ -23,6 +23,25 @@ public static class Help
         return null;
     }
 
+    public static List<Vector3> returnPositionsOfChildrens(string parentName)
+    {
+        var parent = GameObject.Find(parentName);
+        var positionsToReturn = new List<Vector3>();
+
+        if(parent == null) return null;
+        
+
+        Transform[] trs = parent.GetComponentsInChildren<Transform>(true);
+        foreach (Transform t in trs)
+        {
+            positionsToReturn.Add(t.position);
+        }
+
+        return positionsToReturn;
+    }
+
+   // public static pickRandomElement() { }
+
     public static void activateOltarChild(string oltarName)
     {
         GameObject oltarChild = Help.FindChild(GameObject.Find(oltarName), Help.getOltarChildName(oltarName));

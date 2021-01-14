@@ -55,16 +55,16 @@ public class InteractController : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, 1.5f))
         {
-            hittingObject(hit.collider.gameObject);
+            touchingObject(hit.collider.gameObject);
         } else
         {
-            notHittingObject();
+            notTouchingAnyObject();
         }
     }
 
-    private void hittingObject(GameObject objectInRange)
+    private void touchingObject(GameObject objectInRange)
     {
-        Debug.DrawRay(transform.position, transform.forward, Color.red);
+        //Debug.DrawRay(transform.position, transform.forward, Color.red);
         itemInRange = itemManager.getItem(objectInRange.name);
         //print(itemInRange);
 
@@ -74,7 +74,7 @@ public class InteractController : MonoBehaviour
         }
     }
 
-    private void notHittingObject()
+    private void notTouchingAnyObject()
     {
         itemInRange = null;
         messagePanel.hideMessage();
