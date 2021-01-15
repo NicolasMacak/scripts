@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+using static EnemySoundController;
+
 public class AttackController : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -13,6 +15,8 @@ public class AttackController : MonoBehaviour
     private NavMeshAgent agent;
     private SphereCollider col;
     private Vector3 raycasterPoint;
+    private Animator animator;
+    private EnemySoundController soundManager;
 
     private WanderingManagement wanderingAgent;
     private Vector3 currentDestination;
@@ -24,13 +28,18 @@ public class AttackController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerInSight = false;
         col = GetComponent<SphereCollider>();
-        raycasterPoint = GameObject.Find("RayCaster").transform.position;
+        animator = this.GetComponent<Animator>();
+        //raycasterPoint = GameObject.Find("RayCaster").transform.position;
+        soundManager = this.GetComponent<EnemySoundController>(); 
 
         agent = GetComponent<NavMeshAgent>();
         wanderingAgent = new WanderingManagement();
-        wasPlayerSeen = false;
 
-        setWanderingDestination();
+
+
+        wasPlayerSeen = false;
+        //setWanderingDestination();
+
 
         
 
@@ -43,11 +52,14 @@ public class AttackController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        StartCoroutine(waitSeconds(2f));
+        //StartCoroutine(waitSeconds(2f));
         if (playerInSight) { ChasePlayer(); }
-        else if (wasPlayerSeen) { LookForPlayer(); }
 
-        if (!playerInSight) { Wander(); }
+        else if (wasPlayerSeen) { StartCoroutine(InvestigateLocation()); }
+
+        else if (!playerInSight && !wasPlayerSeen) { Wander(); }
+
+        //print("was " + wasPlayerSeen);
 
         //Wander() vybavené na začiatku
         //ChasePlayer()
@@ -63,10 +75,9 @@ public class AttackController : MonoBehaviour
 
     private void ChasePlayer()
     {
+        StartRunning();
         currentDestination = player.transform.position;
         agent.SetDestination(currentDestination);
-        
-        //setDestination(player.transform.position);
         transform.LookAt(player.transform.position - player.transform.up);
     }
 
@@ -82,26 +93,24 @@ public class AttackController : MonoBehaviour
     //    return true;
     //}
 
-    private void LookForPlayer()
+    private IEnumerator InvestigateLocation()
     {
-        if (!hasReachedDestination()) { return; }
-        
+        while (!hasReachedDestination())
+        {
+            yield return null;
+        }
+
+        StartCoroutine(TriggerAndResetAnimation("LookForPlayer")); 
+        yield return new WaitForSeconds(4); // length of LookingAroundAnimation
         wasPlayerSeen = false;
-
-
-        
-
-        //StartCoroutine(waitSeconds(2f));
-
-        
+        StartWalking();
     }
 
-    private IEnumerator waitSeconds(float seconds)
-    {
-        //print("looking for player");
-        yield return new WaitForSeconds(seconds);
-        print("waiting ended");
-    }
+    //private IEnumerator waitSeconds(float seconds)
+    //{
+    //    //print("looking for player");
+        
+    //}
 
     private void Wander()
     {
@@ -187,11 +196,33 @@ public class AttackController : MonoBehaviour
     private void PlayerLost()
     {
         playerInSight = false;
+        wasPlayerSeen = false;
     }
 
     private Vector3 returnRaycasterPoint()
     {
         return transform.position + 3 * transform.up + transform.forward;
+    }
+
+    private IEnumerator TriggerAndResetAnimation(string animationId)
+    {
+        animator.SetTrigger(animationId);
+
+        yield return new WaitForSeconds(0.5f);
+        animator.ResetTrigger(animationId);
+    }
+
+    private void StartRunning()
+    {
+        StartCoroutine(TriggerAndResetAnimation("StartRunning"));
+        agent.speed = 8f;
+        soundManager.PlayRunningSound();
+    }
+
+    private void StartWalking()
+    {
+        soundManager.PlayLoopClip(EnemySoundName.Wandering);
+        agent.speed = 2f;
     }
 
 }
