@@ -21,7 +21,41 @@ public class AttackController : MonoBehaviour
     private WanderingManagement wanderingAgent;
     private Vector3 currentDestination;
     private bool wasPlayerSeen;
- 
+
+    
+
+    void oco()
+    {
+        int clovek1 = 0;
+        int clovek2 = 0;
+        int clovek3 = 0;
+        //int i = 0;
+        print("calculating");
+        for(int i = 0; i < 600; i++)
+        {
+            clovek1 =((clovek1 + 3)%7);
+            clovek2 = ((clovek2 + 5)% 7);
+
+        if (i%2 == 0)
+            {
+                clovek3 = ((clovek3 + 3)% 7);
+    } else
+            {
+                clovek3 = ((clovek3 + 4)% 7);
+    }
+
+            //print(clovek1 + ", " + clovek2 + ", " + clovek3);
+
+            if (clovek1 == clovek2 && clovek2 == clovek3)
+            {
+                print("dni " + clovek1 + "iteracii " + i);
+                break;
+            }
+                
+        }
+
+
+    }
 
     void Start()
     {
@@ -58,6 +92,8 @@ public class AttackController : MonoBehaviour
         else if (wasPlayerSeen) { StartCoroutine(InvestigateLocation()); }
 
         else if (!playerInSight && !wasPlayerSeen) { Wander(); }
+
+
 
         //print("was " + wasPlayerSeen);
 
@@ -216,12 +252,12 @@ public class AttackController : MonoBehaviour
     {
         StartCoroutine(TriggerAndResetAnimation("StartRunning"));
         agent.speed = 8f;
-        soundManager.PlayRunningSound();
+        soundManager.PlayClipOnce(EnemySoundName.Running);
     }
 
     private void StartWalking()
     {
-        soundManager.PlayLoopClip(EnemySoundName.Wandering);
+        soundManager.PlayClipLoop(EnemySoundName.Wandering);
         agent.speed = 2f;
     }
 

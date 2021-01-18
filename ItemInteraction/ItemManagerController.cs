@@ -7,7 +7,9 @@ using static Constants;
 public class ItemManagerController : MonoBehaviour
 {
 
-    Dictionary<string, InteractItem> items = new Dictionary<string, InteractItem>();
+    private Dictionary<string, InteractItem> items = new Dictionary<string, InteractItem>();
+
+    public HudInventoryController inventoryHUD;
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +54,7 @@ public class ItemManagerController : MonoBehaviour
     {
         if (!isDemandItemOwned(interactItem.demandItem))
         {
-            print(interactItem.demandItem + " note owned");
+            print(interactItem.demandItem + " not owned");
             return;
         }
 
@@ -92,6 +94,7 @@ public class ItemManagerController : MonoBehaviour
     {
         items[objectName].state = ItemState.USABLE;
         Destroy(GameObject.Find(objectName));
+        inventoryHUD.MakeOwned(objectName);
     }
 
     private void enableItem(string enablerObjectName)
@@ -99,8 +102,21 @@ public class ItemManagerController : MonoBehaviour
         var itemToEnable = enablerObjectName.Replace(nameSpacesStrings.Enabler, "");
         print(itemToEnable);
         items[itemToEnable].state = ItemState.ENABLED;
-        //itemToEnable+lasers - disable 
-        // disableColider
+
+        if(isPrimaryItemEnabler(enablerObjectName)) { disableLasers(itemToEnable); }
     }
 
+    private bool isPrimaryItemEnabler(string itemToEnable)
+    {
+        return itemToEnable.Contains(interactObjectNames.SYRINGE); // doplnit dalsie
+    }
+
+    private void disableLasers(string primaryItemName)
+    {
+       var lasers = GameObject.Find(primaryItemName + nameSpacesStrings.Lasers);
+        
+       if(lasers == null) { print("no such lasers");  return; }
+
+       lasers.SetActive(false);
+    }
 }

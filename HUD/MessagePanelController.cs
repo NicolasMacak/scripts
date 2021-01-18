@@ -50,14 +50,14 @@ public class MessagePanelController : MonoBehaviour
             }
         }
 
-        if(textToDisplay == "")
-        {
-            print("text este nebol priradeny");
-        }
-        else
-        {
-            print(textToDisplay);
-        }
+        //if(textToDisplay == "")
+        //{
+        //    print("text este nebol priradeny");
+        //}
+        //else
+        //{
+        //    print(textToDisplay);
+        //}
         
         message.text = textToDisplay;
     }

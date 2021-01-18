@@ -7,8 +7,6 @@ public class EnemySoundController : MonoBehaviour
     private AudioSource audioSource;
     public SoundClip[] soundClips;
     private EnemySoundName currentClip;
-
-   // private bool hasSoundBeenPlayed;
     
     public enum EnemySoundName
     {
@@ -21,9 +19,7 @@ public class EnemySoundController : MonoBehaviour
     void Start()
     {
         audioSource = this.GetComponent<AudioSource>(); //gameObject.AddComponent<AudioSource>();
-        PlayLoopClip(EnemySoundName.Wandering);
-
-        //hasSoundBeenPlayed = false;
+        PlayClipLoop(EnemySoundName.Wandering);
         
     }
 
@@ -51,21 +47,15 @@ public class EnemySoundController : MonoBehaviour
     {
         AudioClip audioClip = FindClip(soundName);
 
-        if (audioClip == null)
-        {
-            print("no such enemySound");
-            return;
-        }
-            currentClip = soundName;
-            //audioSource.loop = false;
-            audioSource.clip = audioClip;
-            audioSource.Play();
-        
+        if (audioClip == null) { return; }
+
+        currentClip = soundName;
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 
-    public void PlayLoopClip(EnemySoundName soundName)
+    public void PlayClipLoop(EnemySoundName soundName)
     {
-        //currentClip = soundName;
         audioSource.loop = true;
         PlayClip(soundName);
     }
@@ -74,24 +64,9 @@ public class EnemySoundController : MonoBehaviour
     {
         if (soundName == currentClip) { return; } // if song has not been changed, return
 
-       // hasSoundBeenPlayed = true;
         audioSource.loop = false;
         PlayClip(EnemySoundName.Running);      
     }
 
-    public void PlayRunningSound()
-    {
-        if(currentClip == EnemySoundName.Running /*&& audioSource.isPlaying*/)
-        {
-            return;
-        }
-
-        PlayClip(EnemySoundName.Running);
-    }
-
-    //private bool hasOneShotSoundBeenTriggered(EnemySoundName soundName)
-    //{
-    //    return currentClip == soundName && !hasSoundBeenPlayed; // remove isPlaying 
-    //}
 }
 
