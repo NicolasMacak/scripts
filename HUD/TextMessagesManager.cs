@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Constants;
 
 public class TextMessagesManager
 {
@@ -11,15 +12,27 @@ public class TextMessagesManager
 
     public TextMessagesManager()
     {
-        impossible.Add(Constants.interactObjectNames.SYRINGE, "Je potrebný scan ruky");
-        pickup.Add(Constants.interactObjectNames.SYRINGE, "Zahodená vakcína " + Constants.textSuffixes.PICK_UP);
-        use.Add(Constants.interactObjectNames.SYRINGE, "Zahodená vakcína " + Constants.textSuffixes.USE);
+        pickup.Add(interactObjectNames.SYRINGE, "Zahodená vakcína " + textSuffixes.PICK_UP);
+        pickup.Add(interactObjectNames.BOTTLE, "Vodka s Bromhexinom " + textSuffixes.PICK_UP);
+        pickup.Add(interactObjectNames.PHONE, "Dezinformačný mobil " + textSuffixes.PICK_UP);
+
+        pickup.Add(interactObjectNames.SyringeEnabler, "Vypnúť Lasery");
+        pickup.Add(interactObjectNames.BottleEnabler, "Vypnúť Lasery");
+        pickup.Add(interactObjectNames.PhoneEnabler, "Vypnúť Lasery");
+
+        use.Add(interactObjectNames.SYRINGE, "Zahodená vakcína " + textSuffixes.USE);
+        use.Add(interactObjectNames.BOTTLE, "Zahodená vakcína " + textSuffixes.USE);
+        use.Add(interactObjectNames.PHONE, "Zahodená vakcína " + textSuffixes.USE);
+
+        impossible.Add(interactObjectNames.SYRINGE, "Je potrebné overenie");
+        impossible.Add(interactObjectNames.BOTTLE, "Je potrebné overenie");
+        impossible.Add(interactObjectNames.PHONE, "Je potrebné overenie");
 
 
     }
 
     /// <summary>Returns message for locked items</summary>
-    public string getLocked(string objectName)
+    public string getImpossible(string objectName)
     {
         return impossible.ContainsKey(objectName) ? impossible[objectName] : objectName + "";
     }
@@ -27,6 +40,7 @@ public class TextMessagesManager
     /// <summary>Returns message for pickup items</summary>
     public string getPickup(string objectName)
     {
+
         return pickup.ContainsKey(objectName) ? pickup[objectName] : "";
     }
 

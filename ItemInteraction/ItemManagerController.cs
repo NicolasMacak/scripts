@@ -22,13 +22,20 @@ public class ItemManagerController : MonoBehaviour
     {
         // Primary items
         items.Add(interactObjectNames.SYRINGE, new InteractItem(interactObjectNames.SYRINGE, "Zahodená vakcína", ItemCategory.PICKABLE, ItemState.DISABLED, null));
-        items.Add("SyringeOltar", new InteractItem("SyringeOltar", "Oltár Zahodená vakcína", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.SYRINGE));
-        items.Add("SyringeEnabler", new InteractItem("SyringeEnabler", "Enabler vakcína", ItemCategory.ENABLER, ItemState.ENABLED, null));
+        items.Add(interactObjectNames.BOTTLE, new InteractItem(interactObjectNames.BOTTLE, "Vodka s Bromhexinom", ItemCategory.PICKABLE, ItemState.DISABLED, null));
+        items.Add(interactObjectNames.PHONE, new InteractItem(interactObjectNames.PHONE, "Dezinformačný mobil", ItemCategory.PICKABLE, ItemState.DISABLED, null));
+
+
+        items.Add(interactObjectNames.SyringeOltar, new InteractItem(interactObjectNames.SyringeOltar, "Oltár Vakcína", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.SYRINGE));
+        items.Add(interactObjectNames.BottleOltar, new InteractItem(interactObjectNames.BottleOltar, "Oltár Vodka", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.BOTTLE));
+        items.Add(interactObjectNames.PhoneOltar, new InteractItem(interactObjectNames.PhoneOltar, "Oltár Mobil", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.PHONE));
+
+
+        items.Add(interactObjectNames.SyringeEnabler, new InteractItem(interactObjectNames.SyringeEnabler, "Enabler vakcína", ItemCategory.ENABLER, ItemState.ENABLED, null));
+        items.Add(interactObjectNames.BottleEnabler, new InteractItem(interactObjectNames.BottleEnabler, "Enabler Vodka", ItemCategory.ENABLER, ItemState.ENABLED, null));
+        items.Add(interactObjectNames.PhoneEnabler, new InteractItem(interactObjectNames.PhoneEnabler, "Enabler Mobil", ItemCategory.ENABLER, ItemState.ENABLED, null));
 
         items.Add(interactObjectNames.NOTE01, new InteractItem(interactObjectNames.NOTE01, "Poznámka"));
-
-
-
 
         // Secondary items
         // items.Add("Synerge", new InteractItem("Zahodená vakcína", InteractItem.Category.OLTAR, InteractItem.ItemState.DISABLED));
@@ -100,7 +107,7 @@ public class ItemManagerController : MonoBehaviour
     private void enableItem(string enablerObjectName)
     {
         var itemToEnable = enablerObjectName.Replace(nameSpacesStrings.Enabler, "");
-        print(itemToEnable);
+        print("toEnable" + itemToEnable);
         items[itemToEnable].state = ItemState.ENABLED;
 
         if(isPrimaryItemEnabler(enablerObjectName)) { disableLasers(itemToEnable); }

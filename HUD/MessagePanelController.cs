@@ -28,6 +28,8 @@ public class MessagePanelController : MonoBehaviour
 
         string textToDisplay = "";
 
+        print("name " + /*interactItem.objectName*/);
+
         if(interactItem.category == ItemCategory.READABLE)
         {
             textToDisplay = interactItem.title + Constants.textSuffixes.READ;
@@ -37,7 +39,7 @@ public class MessagePanelController : MonoBehaviour
             switch (interactItem.state)
             {
                 case ItemState.DISABLED:
-                    textToDisplay = textMessageManager.getLocked(interactItem.objectName);
+                    textToDisplay = textMessageManager.getImpossible(interactItem.objectName);
                     break;
 
                 case ItemState.ENABLED:

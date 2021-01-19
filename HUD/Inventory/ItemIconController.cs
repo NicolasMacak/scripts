@@ -37,7 +37,6 @@ public class ItemIconController : MonoBehaviour
 
     public void setMaxAlpha()
     {
-        print(icon.color);
         var tmpColor = icon.color;
         tmpColor.a = 1f;
 

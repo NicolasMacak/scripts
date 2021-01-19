@@ -10,6 +10,14 @@ public static class Constants
         public const string BOTTLE = "Bottle";
         public const string PHONE = "Phone";
 
+        public const string SyringeOltar = SYRINGE + nameSpacesStrings.Oltar;
+        public const string PhoneOltar = PHONE + nameSpacesStrings.Oltar;
+        public const string BottleOltar = BOTTLE + nameSpacesStrings.Oltar;
+
+        public const string SyringeEnabler = SYRINGE + nameSpacesStrings.Enabler;
+        public const string PhoneEnabler = PHONE + nameSpacesStrings.Enabler;
+        public const string BottleEnabler = BOTTLE + nameSpacesStrings.Enabler;
+
         public const string NOTE01 = "Note01";
     }
     public class textSuffixes

@@ -45,6 +45,8 @@ public static class Help
     public static void activateOltarChild(string oltarName)
     {
         GameObject oltarChild = Help.FindChild(GameObject.Find(oltarName), Help.getOltarChildName(oltarName));
+
+        if (oltarChild == null) { return; }
         oltarChild.SetActive(true);
     }
 }
