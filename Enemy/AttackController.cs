@@ -136,7 +136,7 @@ public class AttackController : MonoBehaviour
             yield return null;
         }
 
-        StartCoroutine(TriggerAndResetAnimation("LookForPlayer")); 
+        StartCoroutine(TriggerAndResetAnimation("LookForPlayer"));  // .GetCurrentAnimatorStateInfo(0).IsName("AnimationName")
         yield return new WaitForSeconds(4); // length of LookingAroundAnimation
         wasPlayerSeen = false;
         StartWalking();

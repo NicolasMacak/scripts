@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using static Help;
+using static SoundController;
 
 public class NoteController : MonoBehaviour
 {
@@ -18,12 +20,14 @@ public class NoteController : MonoBehaviour
 
     private void initNotes()
     {
-        notes.Add("Note01", "Neuveritelne poznamky");
+        notes.Add("Note01", "Neuveritelne poznamky @ ohoho ohoho oho @ hhhhh");
     }
 
     private string getNote(string noteName)
     {
-        return notes.ContainsKey(noteName) ? notes[noteName] : "";
+        var note = notes.ContainsKey(noteName) ? notes[noteName] : "";
+
+        return note.Replace("@", System.Environment.NewLine);
     }
 
     /// <summary>Displays note for user</summary>
@@ -32,6 +36,7 @@ public class NoteController : MonoBehaviour
         this.gameObject.SetActive(true);
         note.text = getNote(noteName);
         Time.timeScale = 0; // stop game while reading
+        ChangeAudioState(AudioState.Pause);
         return true;
     }
 
@@ -39,6 +44,7 @@ public class NoteController : MonoBehaviour
     {
         this.gameObject.SetActive(false);
         Time.timeScale = 1;
+        ChangeAudioState(AudioState.Play);
         return false;
     }
 }

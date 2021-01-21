@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public static class Help 
+using static SoundController;
+public static class Help
 {
+    
 
     public static string getOltarChildName(string oltarName)
     {
@@ -28,8 +29,8 @@ public static class Help
         var parent = GameObject.Find(parentName);
         var positionsToReturn = new List<Vector3>();
 
-        if(parent == null) return null;
-        
+        if (parent == null) return null;
+
 
         Transform[] trs = parent.GetComponentsInChildren<Transform>(true);
         foreach (Transform t in trs)
@@ -40,7 +41,7 @@ public static class Help
         return positionsToReturn;
     }
 
-   // public static pickRandomElement() { }
+    // public static pickRandomElement() { }
 
     public static void activateOltarChild(string oltarName)
     {
@@ -49,4 +50,22 @@ public static class Help
         if (oltarChild == null) { return; }
         oltarChild.SetActive(true);
     }
+
+    public static void ChangeAudioState(AudioState audioState)
+    {
+        var allAudioSources = Object.FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+
+        foreach (AudioSource audioSource in allAudioSources)
+        {
+            if(audioState == AudioState.Pause)
+            {
+                audioSource.Pause();
+            }
+            else
+            {
+                audioSource.UnPause();
+            }
+        }
+    }
+
 }

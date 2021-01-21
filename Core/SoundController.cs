@@ -14,6 +14,12 @@ public class SoundController : MonoBehaviour
         put
     }
 
+    public enum AudioState
+    {
+        Play,
+        Pause
+    }
+
     // Start is called before the first frame update
     void Start()
     {

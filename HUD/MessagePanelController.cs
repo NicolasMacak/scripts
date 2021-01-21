@@ -28,7 +28,7 @@ public class MessagePanelController : MonoBehaviour
 
         string textToDisplay = "";
 
-        print("name " + /*interactItem.objectName*/);
+        //print("name " + /*interactItem.objectName*/);
 
         if(interactItem.category == ItemCategory.READABLE)
         {
