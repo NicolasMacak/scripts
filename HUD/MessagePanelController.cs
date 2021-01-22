@@ -14,6 +14,7 @@ public class MessagePanelController : MonoBehaviour
     TextMessagesManager textMessageManager = new TextMessagesManager();
 
     public TextMeshProUGUI message;
+    public ItemManagerController inventory;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,40 +29,30 @@ public class MessagePanelController : MonoBehaviour
 
         string textToDisplay = "";
 
-        //print("name " + /*interactItem.objectName*/);
+        textToDisplay = interactItem.title + " (E)";
+        textToDisplay += addSecondRowDetail(interactItem);
+        
+        message.text = textToDisplay;
+    }
 
-        if(interactItem.category == ItemCategory.READABLE)
+    private string addSecondRowDetail(InteractItem interactItem)
+    {
+        string textToReturn = "";
+
+        if (interactItem.category == ItemCategory.READABLE)
         {
-            textToDisplay = interactItem.title + Constants.textSuffixes.READ;
+            textToReturn += Constants.textSuffixes.READ; // item to read
+        }
+        else if(!inventory.isDemandItemOwned(interactItem.demandItem) || interactItem.state == ItemState.DISABLED)
+        {
+            textToReturn += textMessageManager.getDisabledMessage(interactItem.objectName); // cant interact because item is not owned
         }
         else
         {
-            switch (interactItem.state)
-            {
-                case ItemState.DISABLED:
-                    textToDisplay = textMessageManager.getImpossible(interactItem.objectName);
-                    break;
-
-                case ItemState.ENABLED:
-                    textToDisplay = textMessageManager.getPickup(interactItem.objectName);
-                    break;
-
-                case ItemState.USABLE:
-                    textToDisplay = textMessageManager.getUse(interactItem.objectName);
-                    break;
-            }
+            textToReturn += textMessageManager.getEnabledMessage(interactItem.objectName); // all good
         }
 
-        //if(textToDisplay == "")
-        //{
-        //    print("text este nebol priradeny");
-        //}
-        //else
-        //{
-        //    print(textToDisplay);
-        //}
-        
-        message.text = textToDisplay;
+        return System.Environment.NewLine + textToReturn;
     }
 
     public void hideMessage()

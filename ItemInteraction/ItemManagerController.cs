@@ -35,7 +35,7 @@ public class ItemManagerController : MonoBehaviour
         items.Add(interactObjectNames.BottleEnabler, new InteractItem(interactObjectNames.BottleEnabler, "Enabler Vodka", ItemCategory.ENABLER, ItemState.ENABLED, null));
         items.Add(interactObjectNames.PhoneEnabler, new InteractItem(interactObjectNames.PhoneEnabler, "Enabler Mobil", ItemCategory.ENABLER, ItemState.ENABLED, null));
 
-        items.Add(interactObjectNames.NOTE01, new InteractItem(interactObjectNames.NOTE01, "Poznámka"));
+        items.Add(interactObjectNames.NOTE01, new InteractItem(interactObjectNames.NOTE01, "Poznámka" + System.Environment.NewLine + "boga boga"));
 
         // Secondary items
         // items.Add("Synerge", new InteractItem("Zahodená vakcína", InteractItem.Category.OLTAR, InteractItem.ItemState.DISABLED));
@@ -86,7 +86,7 @@ public class ItemManagerController : MonoBehaviour
     /// </summary>
     /// <param name="demandItemName"></param>
     /// <returns></returns>
-    private bool isDemandItemOwned(string demandItemName)
+    public bool isDemandItemOwned(string demandItemName)
     {
         return demandItemName != null && items.ContainsKey(demandItemName) ? items[demandItemName].state == ItemState.USABLE : true;
     }
@@ -109,6 +109,7 @@ public class ItemManagerController : MonoBehaviour
         var itemToEnable = enablerObjectName.Replace(nameSpacesStrings.Enabler, "");
         print("toEnable" + itemToEnable);
         items[itemToEnable].state = ItemState.ENABLED;
+        items[enablerObjectName].state = ItemState.DISABLED; // enabler is used
 
         if(isPrimaryItemEnabler(enablerObjectName)) { disableLasers(itemToEnable); }
     }

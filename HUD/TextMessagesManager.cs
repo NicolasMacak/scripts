@@ -6,47 +6,46 @@ using static Constants;
 public class TextMessagesManager
 {
     // Start is called before the first frame update
-    Dictionary<string, string> impossible = new Dictionary<string, string>();
-    Dictionary<string, string> pickup = new Dictionary<string, string>();
-    Dictionary<string, string> use = new Dictionary<string, string>();
+    Dictionary<string, string> disabledMessages = new Dictionary<string, string>();
+    Dictionary<string, string> enabledMessages = new Dictionary<string, string>();
+    Dictionary<string, string> usableMessages = new Dictionary<string, string>();
 
     public TextMessagesManager()
     {
-        pickup.Add(interactObjectNames.SYRINGE, "Zahodená vakcína " + textSuffixes.PICK_UP);
-        pickup.Add(interactObjectNames.BOTTLE, "Vodka s Bromhexinom " + textSuffixes.PICK_UP);
-        pickup.Add(interactObjectNames.PHONE, "Dezinformačný mobil " + textSuffixes.PICK_UP);
+        enabledMessages.Add(interactObjectNames.SYRINGE,  textSuffixes.PICK_UP);
+        enabledMessages.Add(interactObjectNames.BOTTLE, textSuffixes.PICK_UP);
+        enabledMessages.Add(interactObjectNames.PHONE, textSuffixes.PICK_UP);
 
-        pickup.Add(interactObjectNames.SyringeEnabler, "Vypnúť Lasery");
-        pickup.Add(interactObjectNames.BottleEnabler, "Vypnúť Lasery");
-        pickup.Add(interactObjectNames.PhoneEnabler, "Vypnúť Lasery");
+        enabledMessages.Add(interactObjectNames.SyringeEnabler, "Vypnúť Lasery");
+        enabledMessages.Add(interactObjectNames.BottleEnabler, "Vypnúť Lasery");
+        enabledMessages.Add(interactObjectNames.PhoneEnabler, "Vypnúť Lasery");
 
-        use.Add(interactObjectNames.SYRINGE, "Zahodená vakcína " + textSuffixes.USE);
-        use.Add(interactObjectNames.BOTTLE, "Zahodená vakcína " + textSuffixes.USE);
-        use.Add(interactObjectNames.PHONE, "Zahodená vakcína " + textSuffixes.USE);
+        //usableMessages.Add(interactObjectNames.SYRINGE, "Zahodená vakcína " + textSuffixes.USE);
+        //usableMessages.Add(interactObjectNames.BOTTLE, "Zahodená vakcína " + textSuffixes.USE);
+        //usableMessages.Add(interactObjectNames.PHONE, "Zahodená vakcína " + textSuffixes.USE);
 
-        impossible.Add(interactObjectNames.SYRINGE, "Je potrebné overenie");
-        impossible.Add(interactObjectNames.BOTTLE, "Je potrebné overenie");
-        impossible.Add(interactObjectNames.PHONE, "Je potrebné overenie");
-
+        disabledMessages.Add(interactObjectNames.SYRINGE, "Je potrebné overenie");
+        disabledMessages.Add(interactObjectNames.BOTTLE, "Je potrebné overenie");
+        disabledMessages.Add(interactObjectNames.PHONE, "Je potrebné overenie");
 
     }
 
     /// <summary>Returns message for locked items</summary>
-    public string getImpossible(string objectName)
+    public string getDisabledMessage(string objectName)
     {
-        return impossible.ContainsKey(objectName) ? impossible[objectName] : objectName + "";
+        return disabledMessages.ContainsKey(objectName) ? disabledMessages[objectName] : "";
     }
 
     /// <summary>Returns message for pickup items</summary>
-    public string getPickup(string objectName)
+    public string getEnabledMessage(string objectName)
     {
 
-        return pickup.ContainsKey(objectName) ? pickup[objectName] : "";
+        return enabledMessages.ContainsKey(objectName) ? enabledMessages[objectName] : "";
     }
 
     /// <summary>Returns message for usable items</summary>
-    public string getUse(string objectName)
-    {
-        return use.ContainsKey(objectName) ? use[objectName] : "";
-    }
+    //public string getUsableMessage(string objectName)
+    //{
+    //    return usableMessages.ContainsKey(objectName) ? usableMessages[objectName] : "";
+    //}
 }

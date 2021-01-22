@@ -32,7 +32,7 @@ public class InteractItem
     {
         DISABLED = 0, // item cant be interacted with
         ENABLED = 1, // item can be interacted with
-        USABLE = 2, // item can be used
+        USABLE = 2, // item can be used lepsie by bolo owned
         REMOVED = 3 // item is removed
     }
 

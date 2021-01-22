@@ -22,41 +22,6 @@ public class AttackController : MonoBehaviour
     private Vector3 currentDestination;
     private bool wasPlayerSeen;
 
-    
-
-    void oco()
-    {
-        int clovek1 = 0;
-        int clovek2 = 0;
-        int clovek3 = 0;
-        //int i = 0;
-        print("calculating");
-        for(int i = 0; i < 600; i++)
-        {
-            clovek1 =((clovek1 + 3)%7);
-            clovek2 = ((clovek2 + 5)% 7);
-
-        if (i%2 == 0)
-            {
-                clovek3 = ((clovek3 + 3)% 7);
-    } else
-            {
-                clovek3 = ((clovek3 + 4)% 7);
-    }
-
-            //print(clovek1 + ", " + clovek2 + ", " + clovek3);
-
-            if (clovek1 == clovek2 && clovek2 == clovek3)
-            {
-                print("dni " + clovek1 + "iteracii " + i);
-                break;
-            }
-                
-        }
-
-
-    }
-
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -72,10 +37,10 @@ public class AttackController : MonoBehaviour
 
 
         wasPlayerSeen = false;
-        //setWanderingDestination();
+        setWanderingDestination();
 
 
-        
+
 
         //wanderingPoints = initializeWanderingPoints();
         //print(wanderingPoints.Remove(wanderingPoints[0]));
@@ -86,14 +51,14 @@ public class AttackController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //StartCoroutine(waitSeconds(2f));
+
         if (playerInSight) { ChasePlayer(); }
 
         else if (wasPlayerSeen) { StartCoroutine(InvestigateLocation()); }
 
         else if (!playerInSight && !wasPlayerSeen) { Wander(); }
 
-
+        //print(animator.GetCurrentAnimatorStateInfo(0).IsName("LookingAround"));
 
         //print("was " + wasPlayerSeen);
 
@@ -117,18 +82,6 @@ public class AttackController : MonoBehaviour
         transform.LookAt(player.transform.position - player.transform.up);
     }
 
-    //private bool hasReachedSpotWherePlayerWasLastSeen()
-    //{
-    //    print("destination " + hasReachedDestination());
-    //    //print("wasPlayerSeen " + wasPlayerSeen);
-    //    if (!hasReachedDestination() && wasPlayerSeen)
-    //    {
-    //        return false;
-    //    }
-    //    wasPlayerSeen = false;
-    //    return true;
-    //}
-
     private IEnumerator InvestigateLocation()
     {
         while (!hasReachedDestination())
@@ -136,17 +89,22 @@ public class AttackController : MonoBehaviour
             yield return null;
         }
 
+        /*
+         zmeny. Bola by funckia triggerLookAround kde sa triggerne lookAround animacia, pokial uz nebezi.
+        potom by som iba do tejto dal ifs ktore by sa returnovali kym by animacia bezala         * */
+
         StartCoroutine(TriggerAndResetAnimation("LookForPlayer"));  // .GetCurrentAnimatorStateInfo(0).IsName("AnimationName")
+        //if (animator.GetCurrentAnimatorStateInfo(0).IsName("LookingAround"))
+        //{
+        //    yield return null;
+        //}
+
         yield return new WaitForSeconds(4); // length of LookingAroundAnimation
         wasPlayerSeen = false;
         StartWalking();
     }
 
-    //private IEnumerator waitSeconds(float seconds)
-    //{
-    //    //print("looking for player");
-        
-    //}
+
 
     private void Wander()
     {
@@ -182,7 +140,7 @@ public class AttackController : MonoBehaviour
 
     private void lookForPlayerInRange()
     {
-        Vector3 playerDirection = (player.transform.position - player.transform.up) - raycasterPoint;
+        Vector3 playerDirection = (player.transform.position + 0.5f * player.transform.up) - raycasterPoint;
 
         //Debug.DrawLine(raycasterPoint, (raycasterPoint + direction.normalized));
         if (isPlayerInFieldOfView(playerDirection) && isPlayerBeingSeen(playerDirection))
@@ -203,15 +161,14 @@ public class AttackController : MonoBehaviour
 
     private bool isPlayerBeingSeen(Vector3 playerDirection)
     {
-        //print("in sight");
-        Debug.DrawLine(raycasterPoint, /*transform.forward*/ /*(raycasterPoint + 2*playerDirection.normalized)*/ player.transform.position + player.transform.up, Color.red);
+        //print("in sight radius");
+        Debug.DrawLine(raycasterPoint, (player.transform.position + 0.5f * player.transform.up), Color.red);
         RaycastHit hit;
-        if(Physics.Raycast(raycasterPoint, /*transform.forward*/ playerDirection.normalized, out hit, 2*col.radius))
+        if(Physics.Raycast(raycasterPoint, /*transform.forward*/ playerDirection.normalized, out hit, 4*col.radius))
         {
-            //Debug.DrawLine(raycasterPoint, /*transform.forward*/ playerDirection.normalized, Color.red);
             if (hit.collider.gameObject == player)
             {
-                //print("isee");             
+                //print("isee");
                 return true;
             }
         }
@@ -221,7 +178,7 @@ public class AttackController : MonoBehaviour
 
     private bool hasReachedDestination()
     {
-        return Vector3.Distance(transform.position, currentDestination) < 2f;
+        return Vector3.Distance(transform.position, currentDestination) < 3f;
     }
 
     private bool isPlayerNearby()
@@ -237,7 +194,7 @@ public class AttackController : MonoBehaviour
 
     private Vector3 returnRaycasterPoint()
     {
-        return transform.position + 3 * transform.up + transform.forward;
+        return transform.position + 1 * transform.up + transform.forward;
     }
 
     private IEnumerator TriggerAndResetAnimation(string animationId)

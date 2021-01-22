@@ -41,6 +41,6 @@ public class WanderingManagement
 
     private List<Vector3> initializeWanderingPoints()
     {
-        return Help.returnPositionsOfChildrens("TestWanderingPoints");
+        return Help.returnPositionsOfChildrens("WanderingPoints");
     }
 }
