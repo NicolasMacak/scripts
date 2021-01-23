@@ -34,7 +34,7 @@ public class HudInventoryController : MonoBehaviour
 
         if(itemIcon == null)
         {
-            print("no such icon");
+            print("no such icon: " + item);
             return;
         }
 

@@ -9,6 +9,7 @@ public class AttackController : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject player;
+    public RespawnController respawnManager;
 
     private bool playerInSight;
     private float fieldOfView = 110f;
@@ -28,7 +29,6 @@ public class AttackController : MonoBehaviour
         playerInSight = false;
         col = GetComponent<SphereCollider>();
         animator = this.GetComponent<Animator>();
-        //raycasterPoint = GameObject.Find("RayCaster").transform.position;
         soundManager = this.GetComponent<EnemySoundController>(); 
 
         agent = GetComponent<NavMeshAgent>();
@@ -37,41 +37,29 @@ public class AttackController : MonoBehaviour
 
 
         wasPlayerSeen = false;
-        setWanderingDestination();
+        //setWanderingDestination();
+    }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject == player) EvaluateColisionWithPlayer(other); // if not player, return       
+    }
 
-
-
-        //wanderingPoints = initializeWanderingPoints();
-        //print(wanderingPoints.Remove(wanderingPoints[0]));
-        //print(wanderingPoints + "size " + wanderingPoints.Count);
-        // agent.SetDestination(GameObject.Find("semPod").transform.position);
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == player) { PlayerLost(); } // if not player, return
     }
 
     // Update is called once per frame
     void Update()
     {
-
         if (playerInSight) { ChasePlayer(); }
 
         else if (wasPlayerSeen) { StartCoroutine(InvestigateLocation()); }
 
         else if (!playerInSight && !wasPlayerSeen) { Wander(); }
 
-        //print(animator.GetCurrentAnimatorStateInfo(0).IsName("LookingAround"));
-
-        //print("was " + wasPlayerSeen);
-
-        //Wander() vybavené na začiatku
-        //ChasePlayer()
-        //LookForPlayer()
-        //Wander
-
-        //if (playerInSight) selectingAction();
-        //else Wander();
-        //selectingAction();
-
-        // print("Distance " + Vector3.Distance(transform.position, player.transform.position));
+        //print(agent.isPathStale);
     }
 
     private void ChasePlayer()
@@ -121,20 +109,15 @@ public class AttackController : MonoBehaviour
         agent.SetDestination(currentDestination);
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject == player) EvaluateColisionWithPlayer(other); // if not player, return       
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject == player) { PlayerLost(); } // if not player, return
-    }
-
     private void EvaluateColisionWithPlayer(Collider player)
     {
         raycasterPoint = returnRaycasterPoint();
-        playerInSight = isPlayerNearby();
+
+        //if (isPlayerNearby())
+        //{
+        //    KillHimAndWalkAway();
+        //}
+
         lookForPlayerInRange();
     }
 
@@ -147,6 +130,10 @@ public class AttackController : MonoBehaviour
         {
             playerInSight = true;
             wasPlayerSeen = true;
+        }
+        else
+        {
+            playerInSight = false;
         }
     }
 
@@ -168,12 +155,20 @@ public class AttackController : MonoBehaviour
         {
             if (hit.collider.gameObject == player)
             {
-                //print("isee");
+                //print("iSeeYou");
                 return true;
             }
         }
 
         return false;
+    }
+
+    private void KillHimAndWalkAway()
+    {
+        wasPlayerSeen = false;
+        playerInSight = false;
+        respawnManager.KillPlayer();
+        StartWalking();
     }
 
     private bool hasReachedDestination()
@@ -189,7 +184,7 @@ public class AttackController : MonoBehaviour
     private void PlayerLost()
     {
         playerInSight = false;
-        wasPlayerSeen = false;
+        //wasPlayerSeen = false;
     }
 
     private Vector3 returnRaycasterPoint()
@@ -208,12 +203,13 @@ public class AttackController : MonoBehaviour
     private void StartRunning()
     {
         StartCoroutine(TriggerAndResetAnimation("StartRunning"));
-        agent.speed = 8f;
+        agent.speed = 1f;
         soundManager.PlayClipOnce(EnemySoundName.Running);
     }
 
     private void StartWalking()
     {
+        StartCoroutine(TriggerAndResetAnimation("StartWalking"));
         soundManager.PlayClipLoop(EnemySoundName.Wandering);
         agent.speed = 2f;
     }

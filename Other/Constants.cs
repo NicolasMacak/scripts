@@ -18,6 +18,10 @@ public static class Constants
         public const string PhoneEnabler = PHONE + nameSpacesStrings.Enabler;
         public const string BottleEnabler = BOTTLE + nameSpacesStrings.Enabler;
 
+        public const string SyringeCard = SYRINGE + nameSpacesStrings.Card;
+        public const string PhoneCard = PHONE + nameSpacesStrings.Card;
+        public const string BottleCard = BOTTLE + nameSpacesStrings.Card;
+
         public const string NOTE01 = "Note01";
     }
     public class textSuffixes
@@ -31,6 +35,8 @@ public static class Constants
     {
         public const string Oltar = "Oltar";
         public const string Enabler = "Enabler";
+        public const string Card = "Card";
+        public const string CheckPoint = "CheckPoint";
 
         public const string Lasers = "Lasers";
 

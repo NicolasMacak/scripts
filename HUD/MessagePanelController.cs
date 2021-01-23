@@ -43,11 +43,11 @@ public class MessagePanelController : MonoBehaviour
         {
             textToReturn += Constants.textSuffixes.READ; // item to read
         }
-        else if(!inventory.isDemandItemOwned(interactItem.demandItem) || interactItem.state == ItemState.DISABLED)
+        else if (!inventory.isDemandItemOwned(interactItem.demandItem) || interactItem.state == ItemState.DISABLED)
         {
             textToReturn += textMessageManager.getDisabledMessage(interactItem.objectName); // cant interact because item is not owned
         }
-        else
+        else if (interactItem.state == ItemState.ENABLED)
         {
             textToReturn += textMessageManager.getEnabledMessage(interactItem.objectName); // all good
         }

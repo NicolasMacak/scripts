@@ -5,13 +5,12 @@ using UnityEngine;
 public class SoundController : MonoBehaviour
 {
     private AudioSource audioSource;
-    private AudioClip audioClip;
     public SoundClip[] soundClips;
 
     public enum SoundName
     {
         Pickup,
-        put
+        Read
     }
 
     public enum AudioState

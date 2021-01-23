@@ -16,17 +16,21 @@ public class TextMessagesManager
         enabledMessages.Add(interactObjectNames.BOTTLE, textSuffixes.PICK_UP);
         enabledMessages.Add(interactObjectNames.PHONE, textSuffixes.PICK_UP);
 
-        enabledMessages.Add(interactObjectNames.SyringeEnabler, "Vypnúť Lasery");
-        enabledMessages.Add(interactObjectNames.BottleEnabler, "Vypnúť Lasery");
-        enabledMessages.Add(interactObjectNames.PhoneEnabler, "Vypnúť Lasery");
+        enabledMessages.Add(interactObjectNames.SyringeEnabler, "Deaktivovat Lasery");
+        enabledMessages.Add(interactObjectNames.BottleEnabler, "Deaktivovat Lasery");
+        enabledMessages.Add(interactObjectNames.PhoneEnabler, "Deaktivovat Lasery");
 
-        //usableMessages.Add(interactObjectNames.SYRINGE, "Zahodená vakcína " + textSuffixes.USE);
-        //usableMessages.Add(interactObjectNames.BOTTLE, "Zahodená vakcína " + textSuffixes.USE);
-        //usableMessages.Add(interactObjectNames.PHONE, "Zahodená vakcína " + textSuffixes.USE);
+        // disabled pre Enablery
+        disabledMessages.Add(interactObjectNames.SyringeEnabler, "Treba kartu Dutoschwarzca");
+        disabledMessages.Add(interactObjectNames.BottleEnabler, "Treba kartu Bottla");
+        disabledMessages.Add(interactObjectNames.PhoneEnabler, "Treba kartu Phona");
+        
+        // Disabled pre lasery
+        disabledMessages.Add(interactObjectNames.SYRINGE, "Lasery su zapnute");
+        disabledMessages.Add(interactObjectNames.BOTTLE, "Lasery su zapnute");
+        disabledMessages.Add(interactObjectNames.PHONE, "Lasery su zapnute");
 
-        disabledMessages.Add(interactObjectNames.SYRINGE, "Je potrebné overenie");
-        disabledMessages.Add(interactObjectNames.BOTTLE, "Je potrebné overenie");
-        disabledMessages.Add(interactObjectNames.PHONE, "Je potrebné overenie");
+
 
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static InteractItem;
+using static SoundController;
 
 public class InteractController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class InteractController : MonoBehaviour
 
     public MessagePanelController messagePanel;
     public NoteController noteManager;
+    public SoundController playerSoundManager;
 
     private InteractItem itemInRange;
 
@@ -32,6 +34,7 @@ public class InteractController : MonoBehaviour
                 if(itemInRange.category == ItemCategory.READABLE)
                 {
                     isPlayerReading = isPlayerReading ? noteManager.hideNote() : noteManager.displayNote(itemInRange.objectName); // switch between reading state
+                    if (isPlayerReading) { playerSoundManager.PlayClip(SoundName.Read); } 
                 }
                 else
                 {
