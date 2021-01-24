@@ -29,7 +29,7 @@ public class MessagePanelController : MonoBehaviour
 
         string textToDisplay = "";
 
-        textToDisplay = interactItem.title + " (E)";
+        textToDisplay = interactItem.title;
         textToDisplay += addSecondRowDetail(interactItem);
         
         message.text = textToDisplay;

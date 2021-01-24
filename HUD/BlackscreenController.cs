@@ -6,7 +6,10 @@ using UnityEngine.UI;
 public class BlackscreenController : MonoBehaviour
 {
 
+    public ScenaManager sceneManager;
+
     private CanvasGroup canvasGroup;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +22,23 @@ public class BlackscreenController : MonoBehaviour
         MakeBackScreen();
         yield return new WaitForSeconds(1);
         StartCoroutine(TransitionToTransparent());
+    }
+
+    public void TriggerGameOver()
+    {
+        StartCoroutine(GameOver());
+    }
+
+    private IEnumerator GameOver()
+    {
+        yield return new WaitForSeconds(3);
+        StartCoroutine(TransitionToBlack());
+
+        while (canvasGroup.alpha < 1)
+        {
+            yield return null;
+        }
+        sceneManager.LoadNextScene();
     }
 
     public void TriggerBlackScreen()
@@ -43,5 +63,19 @@ public class BlackscreenController : MonoBehaviour
             yield return null;
         }
         
+    }
+
+    private IEnumerator TransitionToBlack()
+    {
+        float counter = 0f;
+
+        while (counter < 4f)
+        {
+            counter += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(0, 1, counter / 4f);
+
+            yield return null;
+        }
+
     }
 }

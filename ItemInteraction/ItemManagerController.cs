@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using static InteractItem;
 using static Constants;
+using static Help;
+using static SoundController;
 
 public class ItemManagerController : MonoBehaviour
 {
@@ -11,49 +13,47 @@ public class ItemManagerController : MonoBehaviour
 
     public HudInventoryController inventoryHUD;
     public RespawnController respawnController;
+    public ArtefactForceFieldController artefact;
+    public SoundController playerSoundManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        initializeAllItems();    
+        initializeAllItems();       
     }
 
     private void initializeAllItems()
     {
         // Items of power
-        items.Add(interactObjectNames.SYRINGE, new InteractItem(interactObjectNames.SYRINGE, "Zahodená vakcína", ItemCategory.PICKABLE, ItemState.ENABLED, null));
+        items.Add(interactObjectNames.SYRINGE, new InteractItem(interactObjectNames.SYRINGE, "Zahodená vakcína", ItemCategory.PICKABLE, ItemState.DISABLED, null));
         items.Add(interactObjectNames.BOTTLE, new InteractItem(interactObjectNames.BOTTLE, "Vodka s Bromhexinom", ItemCategory.PICKABLE, ItemState.DISABLED, null));
         items.Add(interactObjectNames.PHONE, new InteractItem(interactObjectNames.PHONE, "Dezinformačný mobil", ItemCategory.PICKABLE, ItemState.DISABLED, null));
 
         // Oltars
-        items.Add(interactObjectNames.SyringeOltar, new InteractItem(interactObjectNames.SyringeOltar, "Oltár Vakcína", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.SYRINGE));
-        items.Add(interactObjectNames.BottleOltar, new InteractItem(interactObjectNames.BottleOltar, "Oltár Vodka", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.BOTTLE));
-        items.Add(interactObjectNames.PhoneOltar, new InteractItem(interactObjectNames.PhoneOltar, "Oltár Mobil", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.PHONE));
+        items.Add(interactObjectNames.SyringeOltar, new InteractItem(interactObjectNames.SyringeOltar, "Desturktor vakciny", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.SYRINGE));
+        items.Add(interactObjectNames.BottleOltar, new InteractItem(interactObjectNames.BottleOltar, "Destruktor vodky s bromhexinom", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.BOTTLE));
+        items.Add(interactObjectNames.PhoneOltar, new InteractItem(interactObjectNames.PhoneOltar, "Destruktor mobilu", ItemCategory.OLTAR, ItemState.ENABLED, interactObjectNames.PHONE));
 
         // Enablers
-        items.Add(interactObjectNames.SyringeEnabler, new InteractItem(interactObjectNames.SyringeEnabler, "Enabler vakcína", ItemCategory.ENABLER, ItemState.ENABLED, interactObjectNames.SyringeCard));
-        items.Add(interactObjectNames.BottleEnabler, new InteractItem(interactObjectNames.BottleEnabler, "Enabler Vodka", ItemCategory.ENABLER, ItemState.ENABLED, interactObjectNames.BottleCard));
-        items.Add(interactObjectNames.PhoneEnabler, new InteractItem(interactObjectNames.PhoneEnabler, "Enabler Mobil", ItemCategory.ENABLER, ItemState.ENABLED, interactObjectNames.PhoneCard));
+        items.Add(interactObjectNames.SyringeEnabler, new InteractItem(interactObjectNames.SyringeEnabler, "Deaktivovat lasery", ItemCategory.ENABLER, ItemState.ENABLED, interactObjectNames.SyringeCard));
+        items.Add(interactObjectNames.BottleEnabler, new InteractItem(interactObjectNames.BottleEnabler, "Deaktivovat lasery", ItemCategory.ENABLER, ItemState.ENABLED, interactObjectNames.BottleCard));
+        items.Add(interactObjectNames.PhoneEnabler, new InteractItem(interactObjectNames.PhoneEnabler, "Deaktivovat lasery", ItemCategory.ENABLER, ItemState.ENABLED, interactObjectNames.PhoneCard));
 
         // Cards
-        items.Add(interactObjectNames.SyringeCard, new InteractItem(interactObjectNames.SyringeCard, "Karta Dutoschwarza", ItemCategory.PICKABLE, ItemState.ENABLED, null));
-        items.Add(interactObjectNames.BottleCard, new InteractItem(interactObjectNames.BottleCard, "Karta Bottla", ItemCategory.PICKABLE, ItemState.ENABLED, null));
-        items.Add(interactObjectNames.PhoneCard, new InteractItem(interactObjectNames.PhoneCard, "Karta Phona", ItemCategory.PICKABLE, ItemState.ENABLED, null));
+        items.Add(interactObjectNames.SyringeCard, new InteractItem(interactObjectNames.SyringeCard, "Karta Dr. Dutoschwartza", ItemCategory.PICKABLE, ItemState.ENABLED, null));
+        items.Add(interactObjectNames.BottleCard, new InteractItem(interactObjectNames.BottleCard, "Karta Dr. Nefaria", ItemCategory.PICKABLE, ItemState.ENABLED, null));
+        items.Add(interactObjectNames.PhoneCard, new InteractItem(interactObjectNames.PhoneCard, "Karta Dr. Selviga", ItemCategory.PICKABLE, ItemState.ENABLED, null));
 
         // Notes
-        items.Add(interactObjectNames.NOTE01, new InteractItem(interactObjectNames.NOTE01, "Nakabot updaty"));
-
-        // Secondary items
-        // items.Add("Synerge", new InteractItem("Zahodená vakcína", InteractItem.Category.OLTAR, InteractItem.ItemState.DISABLED));
-
-        // Readable items
-        // items.Add("Synerge", new InteractItem("Zahodená vakcína", InteractItem.Category.OLTAR, InteractItem.ItemState.DISABLED));
-
+        items.Add(interactObjectNames.NOTENakabot, new InteractItem(interactObjectNames.NOTENakabot, "Nakabot 6.4.9"));
+        items.Add(interactObjectNames.NOTEMission, new InteractItem(interactObjectNames.NOTEMission, "Tvoja uloha"));
+        items.Add(interactObjectNames.NOTESyringe, new InteractItem(interactObjectNames.NOTESyringe, "Zahodena vakcina"));
+        items.Add(interactObjectNames.NOTEPhone, new InteractItem(interactObjectNames.NOTEPhone, "Dezinformacny mobil"));
+        items.Add(interactObjectNames.NOTEBottle, new InteractItem(interactObjectNames.NOTEBottle, "Vodka s bromhexinom"));
     }
 
     public InteractItem getItem(string name)
     {
-       //return items.ContainsKey(name) ? items[name]: null;
        if (items.TryGetValue(name, out InteractItem item))
         {
             return item;
@@ -65,11 +65,12 @@ public class ItemManagerController : MonoBehaviour
     
     public void interactWithItem(InteractItem interactItem)
     {
-        if (!isDemandItemOwned(interactItem.demandItem))
+        if (!isDemandItemOwned(interactItem.demandItem)) // item is now owned
         {
-            print(interactItem.demandItem + " not owned");
             return;
         }
+
+        playerSoundManager.PlayClip(SoundName.Pickup);
 
         switch (interactItem.category)
         {
@@ -99,8 +100,11 @@ public class ItemManagerController : MonoBehaviour
 
   
     private void interactWithOltar(string objectName)
-    {   
-        Help.activateOltarChild(objectName); //place item on pillar. Spawn items to the game
+    {
+        Help.ActivateOltarChild(objectName); //place item on pillar. Spawn items to the game
+        items[objectName].state = ItemState.REMOVED;
+
+        if (HaveAllOltarsBeenActivated()) { artefact.TriggerDestruction(); }
     }
 
     private void pickItem(string objectName)
@@ -108,7 +112,6 @@ public class ItemManagerController : MonoBehaviour
         items[objectName].state = ItemState.USABLE;
         Destroy(GameObject.Find(objectName));
         
-        //print(objectName.Replace(nameSpacesStrings.Card, ""));
         if (objectName.Contains(nameSpacesStrings.Card)) // is object Card
         {
             inventoryHUD.UnlockIcon(objectName.Replace(nameSpacesStrings.Card, "")); // Remove substring Card from object name and remove lock
@@ -117,22 +120,25 @@ public class ItemManagerController : MonoBehaviour
         {
             inventoryHUD.MakeOwned(objectName);
             respawnController.setCheckPoint(objectName);
+
+            if (!isNakabotActivated()) { ActivateNakabot(); }
         }
     }
 
     private void enableItem(string enablerObjectName)
     {
         var itemToEnable = enablerObjectName.Replace(nameSpacesStrings.Enabler, "");
-        print("toEnable " + itemToEnable);
         items[itemToEnable].state = ItemState.ENABLED; // enable item to pickup
         items[enablerObjectName].state = ItemState.REMOVED; // prevent from using again
-        
-        if(isPrimaryItemEnabler(enablerObjectName)) { disableLasers(itemToEnable); } // tu sa moze podmienka odstranit
+
+        disableLasers(itemToEnable);
     }
 
-    private bool isPrimaryItemEnabler(string itemToEnable)
+    private bool HaveAllOltarsBeenActivated()
     {
-        return itemToEnable.Contains(interactObjectNames.SYRINGE) || itemToEnable.Contains(interactObjectNames.BOTTLE) || itemToEnable.Contains(interactObjectNames.PHONE); // doplnit dalsie
+        return items[interactObjectNames.SyringeOltar].state == ItemState.REMOVED &&
+               items[interactObjectNames.BottleOltar].state == ItemState.REMOVED &&
+               items[interactObjectNames.PhoneOltar].state == ItemState.REMOVED;
     }
 
     private void disableLasers(string primaryItemName)

@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.AI;
 
 using static EnemySoundController;
+using static BackgroundMusicController;
 
 public class AttackController : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject player;
     public RespawnController respawnManager;
+    public BackgroundMusicController backgroundMusicManager;
 
     private bool playerInSight;
     private float fieldOfView = 110f;
@@ -37,7 +39,7 @@ public class AttackController : MonoBehaviour
 
 
         wasPlayerSeen = false;
-        //setWanderingDestination();
+        setWanderingDestination();
     }
 
     private void OnTriggerStay(Collider other)
@@ -58,13 +60,12 @@ public class AttackController : MonoBehaviour
         else if (wasPlayerSeen) { StartCoroutine(InvestigateLocation()); }
 
         else if (!playerInSight && !wasPlayerSeen) { Wander(); }
-
-        //print(agent.isPathStale);
     }
 
     private void ChasePlayer()
     {
         StartRunning();
+        backgroundMusicManager.PlayClip(BackGroundMusic.ChaseMusic);
         currentDestination = player.transform.position;
         agent.SetDestination(currentDestination);
         transform.LookAt(player.transform.position - player.transform.up);
@@ -72,20 +73,13 @@ public class AttackController : MonoBehaviour
 
     private IEnumerator InvestigateLocation()
     {
+        StartCoroutine(backgroundMusicManager.FadeIntoAmbientMusic());
         while (!hasReachedDestination())
         {
             yield return null;
         }
 
-        /*
-         zmeny. Bola by funckia triggerLookAround kde sa triggerne lookAround animacia, pokial uz nebezi.
-        potom by som iba do tejto dal ifs ktore by sa returnovali kym by animacia bezala         * */
-
-        StartCoroutine(TriggerAndResetAnimation("LookForPlayer"));  // .GetCurrentAnimatorStateInfo(0).IsName("AnimationName")
-        //if (animator.GetCurrentAnimatorStateInfo(0).IsName("LookingAround"))
-        //{
-        //    yield return null;
-        //}
+        StartCoroutine(TriggerAndResetAnimation("LookForPlayer"));  
 
         yield return new WaitForSeconds(4); // length of LookingAroundAnimation
         wasPlayerSeen = false;
@@ -113,10 +107,10 @@ public class AttackController : MonoBehaviour
     {
         raycasterPoint = returnRaycasterPoint();
 
-        //if (isPlayerNearby())
-        //{
-        //    KillHimAndWalkAway();
-        //}
+        if (isPlayerNearby())
+        {
+            KillHimAndWalkAway();
+        }
 
         lookForPlayerInRange();
     }
@@ -203,7 +197,7 @@ public class AttackController : MonoBehaviour
     private void StartRunning()
     {
         StartCoroutine(TriggerAndResetAnimation("StartRunning"));
-        agent.speed = 1f;
+        agent.speed = 8f;
         soundManager.PlayClipOnce(EnemySoundName.Running);
     }
 
@@ -211,7 +205,6 @@ public class AttackController : MonoBehaviour
     {
         StartCoroutine(TriggerAndResetAnimation("StartWalking"));
         soundManager.PlayClipLoop(EnemySoundName.Wandering);
-        agent.speed = 2f;
+        agent.speed = 10f;
     }
-
 }

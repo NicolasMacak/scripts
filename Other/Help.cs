@@ -6,7 +6,7 @@ public static class Help
 {
     
 
-    public static string getOltarChildName(string oltarName)
+    public static string GetOltarChildName(string oltarName)
     {
         return Constants.nameSpacesStrings.Oltar + oltarName.Replace(Constants.nameSpacesStrings.Oltar, "");
     }
@@ -43,9 +43,9 @@ public static class Help
 
     // public static pickRandomElement() { }
 
-    public static void activateOltarChild(string oltarName)
+    public static void ActivateOltarChild(string oltarName)
     {
-        GameObject oltarChild = Help.FindChild(GameObject.Find(oltarName), Help.getOltarChildName(oltarName));
+        GameObject oltarChild = FindChild(GameObject.Find(oltarName), Help.GetOltarChildName(oltarName));
 
         if (oltarChild == null) { return; }
         oltarChild.SetActive(true);
@@ -67,5 +67,33 @@ public static class Help
             }
         }
     }
+    /// <summary>
+    /// Stops time
+    /// </summary>
+    public static void StarPlatinumZaWarudo()
+    {
+        Time.timeScale = 0; // stop game while reading
+        ChangeAudioState(AudioState.Pause);
+    }
 
+    public static void TimeHasBegunToMoveAgain()
+    {
+        Time.timeScale = 1;
+        ChangeAudioState(AudioState.Play);
+    }
+
+    public static void ActivateNakabot()
+    {
+        var nakabot = FindChild(GameObject.Find("Enemy"), "Nakabot");
+        nakabot.SetActive(true);
+
+        var nakabotToRemove = GameObject.Find("NakabotToRemove");
+        nakabotToRemove.SetActive(false);
+    }
+
+    public static bool isNakabotActivated()
+    {
+        var nakabot = FindChild(GameObject.Find("Enemy"), "Nakabot");
+        return nakabot.activeSelf;
+    }
 }

@@ -11,22 +11,10 @@ public class RespawnController : MonoBehaviour
     public GameObject startLocation;
     public CharacterController characterController;
 
-
-    private bool once = true;
     // Start is called before the first frame update
     void Start()
     {
         checkpoint = startLocation.transform.position;
-        //characterController = GetComponent<CharacterController>();
-    }
-
-    void Update()
-    {
-        //if (once)
-        //{
-        //    StartCoroutine(ach());
-        //    once = false;
-        //}    
     }
 
     private IEnumerator ach()
@@ -53,8 +41,6 @@ public class RespawnController : MonoBehaviour
             print("no such checkpoint");
             return;
         }
-
-        print("checkpoint " + newCheckpoint.name + " set");
         checkpoint = newCheckpoint.transform.position;
     }
 }

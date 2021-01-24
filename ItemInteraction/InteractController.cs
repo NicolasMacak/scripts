@@ -12,7 +12,6 @@ public class InteractController : MonoBehaviour
 
     public MessagePanelController messagePanel;
     public NoteController noteManager;
-    public SoundController playerSoundManager;
 
     private InteractItem itemInRange;
 
@@ -28,35 +27,26 @@ public class InteractController : MonoBehaviour
         ZaHando();
 
         if (Input.GetKeyUp(KeyCode.E))
-        {  
-            if (itemInRange != null && itemInRange.state == ItemState.ENABLED) // remove Locked
+        {
+            if (itemInRange != null && itemInRange.state == ItemState.ENABLED) 
             {
                 if(itemInRange.category == ItemCategory.READABLE)
                 {
                     isPlayerReading = isPlayerReading ? noteManager.hideNote() : noteManager.displayNote(itemInRange.objectName); // switch between reading state
-                    if (isPlayerReading) { playerSoundManager.PlayClip(SoundName.Read); } 
                 }
                 else
                 {
                     itemManager.interactWithItem(itemInRange);
                 }
 
-                
-                //itemManager.addToInventory(itemInRange.objectName);
-            }
-            //else if (itemInRange.state == InteractItem.ItemState.USABLE)
-            //{
-            //    //itemManager.noteManager.hideNote();
-            //    // itemManager.useItem 
-            //}
-            
+            }            
         }
     }
 
-    private void ZaHando() // ruka
+    private void ZaHando() // ruka. Evaluates wheter player is touching interactable object or not
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 1.5f))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 2f))
         {
             touchingObject(hit.collider.gameObject);
         } else
@@ -67,9 +57,8 @@ public class InteractController : MonoBehaviour
 
     private void touchingObject(GameObject objectInRange)
     {
-        //Debug.DrawRay(transform.position, transform.forward, Color.red);
         itemInRange = itemManager.getItem(objectInRange.name);
-        //print(itemInRange);
+        
 
         if (itemInRange != null)
         {
@@ -82,28 +71,4 @@ public class InteractController : MonoBehaviour
         itemInRange = null;
         messagePanel.hideMessage();
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    itemInRange = itemManager.getItem(other.gameObject.name);
-    //    print(itemInRange);
-    //    if (itemInRange != null)
-    //    {
-    //        messagePanel.displayMessage(itemInRange);
-    //    }
-            
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    itemInRange = null;
-    //    messagePanel.hideMessage();
-            
-    //}
-
-    //private void addItemToInventory(string objectName)
-    //{
-    //    itemManager.addToInventory("Syringe");
-    //    messagePanel.hideMessage();
-    //}
 }
