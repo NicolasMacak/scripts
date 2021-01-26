@@ -32,7 +32,7 @@ public static class Constants
     {
         public const string PICK_UP = " Zobrat(E)";
         public const string USE = " Pouzit (E)";
-        public const string READ = " Precttat (E)";
+        public const string READ = " Precitat (E)";
     }
 
     public class nameSpacesStrings
@@ -72,7 +72,7 @@ public static class Constants
 
 
         public const string Bottle = "Vodka s Bromhexinom @" +
-            "V dnesnych casoch uz 2 krat v base sa vyznavanie extremizmu. Vo casoch minulych to bol politik, ktory si dostal dost hlasov na to aby sa dostal do parlamentu. Zazrak. @" +
+            "V dnesnych casoch uz 2 krat v base sa vyznavanie extremizmu. V casoch minulych to bol politik, ktory si dostal dost hlasov na to aby sa dostal do parlamentu. Maly zazrak. @" +
             "Dlhy cas tvrdil ze korona neexistuje a po tom co ju sam dostal sa z neho stal chodiaci oxymoron. @@" +
             "Nasiel si na boj proti nej vlastne prostriedky. Boli rovnako uzitocne ako zmyslaci organ tohto jedinca @@ " +
             "Kratko po namixovani svojho lieku nam nase meradla zacali intenzivne hlasit polohu dalsieho objketu." +

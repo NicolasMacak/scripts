@@ -42,6 +42,15 @@ public class AttackController : MonoBehaviour
         setWanderingDestination();
     }
 
+    void Update()
+    {
+        if (playerInSight) { ChasePlayer(); }
+
+        else if (wasPlayerSeen) { StartCoroutine(InvestigateLocation()); }
+
+        else if (!playerInSight && !wasPlayerSeen) { Wander(); }
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject == player) EvaluateColisionWithPlayer(other); // if not player, return       
@@ -50,16 +59,6 @@ public class AttackController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == player) { PlayerLost(); } // if not player, return
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (playerInSight) { ChasePlayer(); }
-
-        else if (wasPlayerSeen) { StartCoroutine(InvestigateLocation()); }
-
-        else if (!playerInSight && !wasPlayerSeen) { Wander(); }
     }
 
     private void ChasePlayer()
@@ -107,9 +106,15 @@ public class AttackController : MonoBehaviour
     {
         raycasterPoint = returnRaycasterPoint();
 
-        if (isPlayerNearby())
+        if (isPlayerInKillRange())
         {
             KillHimAndWalkAway();
+        } 
+
+        if (isPlayerNearby())
+        {
+            PlayerIsBeingSeen();
+            ChasePlayer();
         }
 
         lookForPlayerInRange();
@@ -119,11 +124,9 @@ public class AttackController : MonoBehaviour
     {
         Vector3 playerDirection = (player.transform.position + 0.5f * player.transform.up) - raycasterPoint;
 
-        //Debug.DrawLine(raycasterPoint, (raycasterPoint + direction.normalized));
         if (isPlayerInFieldOfView(playerDirection) && isPlayerBeingSeen(playerDirection))
         {
-            playerInSight = true;
-            wasPlayerSeen = true;
+            PlayerIsBeingSeen();
         }
         else
         {
@@ -143,7 +146,7 @@ public class AttackController : MonoBehaviour
     private bool isPlayerBeingSeen(Vector3 playerDirection)
     {
         //print("in sight radius");
-        Debug.DrawLine(raycasterPoint, (player.transform.position + 0.5f * player.transform.up), Color.red);
+        //Debug.DrawLine(raycasterPoint, (player.transform.position + 0.5f * player.transform.up), Color.red);
         RaycastHit hit;
         if(Physics.Raycast(raycasterPoint, /*transform.forward*/ playerDirection.normalized, out hit, 4*col.radius))
         {
@@ -162,6 +165,7 @@ public class AttackController : MonoBehaviour
         wasPlayerSeen = false;
         playerInSight = false;
         respawnManager.KillPlayer();
+        StartCoroutine(backgroundMusicManager.FadeIntoAmbientMusic());
         StartWalking();
     }
 
@@ -175,9 +179,21 @@ public class AttackController : MonoBehaviour
         return Vector3.Distance(transform.position, player.transform.position) < 4f;
     }
 
+    private bool isPlayerInKillRange()
+    {
+        return Vector3.Distance(transform.position, player.transform.position) < 2f;
+    }
+
+    private void PlayerIsBeingSeen() 
+    {
+        playerInSight = true;
+        wasPlayerSeen = true;
+    }
+
     private void PlayerLost()
     {
         playerInSight = false;
+        StartCoroutine(backgroundMusicManager.FadeIntoAmbientMusic());
         //wasPlayerSeen = false;
     }
 
@@ -205,6 +221,6 @@ public class AttackController : MonoBehaviour
     {
         StartCoroutine(TriggerAndResetAnimation("StartWalking"));
         soundManager.PlayClipLoop(EnemySoundName.Wandering);
-        agent.speed = 10f;
+        agent.speed = 2f;
     }
 }

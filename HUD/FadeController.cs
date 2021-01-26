@@ -6,15 +6,20 @@ public class FadeController : MonoBehaviour
 {
     // Start is called before the first frame update
 
+    private bool isShown = false;
+    private CanvasGroup canvasGroup;
+
     public float Duration = 1;
+    public CanvasGroup extertCanvasGroup;
     void Start()
     {
-        var canvGroup = GetComponent<CanvasGroup>();
-
-        StartCoroutine(DoFade(canvGroup));
+        canvasGroup = extertCanvasGroup == null ? GetComponent<CanvasGroup>() : extertCanvasGroup;
+        
+        if(extertCanvasGroup == null)
+        StartCoroutine(DoFade());
     }
 
-    public IEnumerator DoFade(CanvasGroup canvasGroup)
+    public IEnumerator DoFade()
     {
         float counter = 0f;
 
@@ -25,5 +30,31 @@ public class FadeController : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private IEnumerator Unfade()
+    {
+        float counter = 0f;
+
+        while (counter < Duration)
+        {
+            counter += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(1, 0, counter / Duration);
+
+            yield return null;
+        }
+    }
+
+    public void HideAndShow() 
+    {
+        if (isShown) { 
+             StartCoroutine(Unfade());
+            isShown = false;
+        } else
+        {
+            StartCoroutine(DoFade());
+            isShown = true;
+        }
+
     }
 }

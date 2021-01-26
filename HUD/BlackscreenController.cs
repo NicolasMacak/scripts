@@ -38,6 +38,8 @@ public class BlackscreenController : MonoBehaviour
         {
             yield return null;
         }
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         sceneManager.LoadNextScene();
     }
 

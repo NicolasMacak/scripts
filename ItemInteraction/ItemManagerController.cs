@@ -12,6 +12,7 @@ public class ItemManagerController : MonoBehaviour
     private Dictionary<string, InteractItem> items = new Dictionary<string, InteractItem>();
 
     public HudInventoryController inventoryHUD;
+    public MessagePanelController messageManager;
     public RespawnController respawnController;
     public ArtefactForceFieldController artefact;
     public SoundController playerSoundManager;
@@ -25,7 +26,7 @@ public class ItemManagerController : MonoBehaviour
     private void initializeAllItems()
     {
         // Items of power
-        items.Add(interactObjectNames.SYRINGE, new InteractItem(interactObjectNames.SYRINGE, "Zahodená vakcína", ItemCategory.PICKABLE, ItemState.DISABLED, null));
+        items.Add(interactObjectNames.SYRINGE, new InteractItem(interactObjectNames.SYRINGE, "Zahodena vakcina", ItemCategory.PICKABLE, ItemState.DISABLED, null));
         items.Add(interactObjectNames.BOTTLE, new InteractItem(interactObjectNames.BOTTLE, "Vodka s Bromhexinom", ItemCategory.PICKABLE, ItemState.DISABLED, null));
         items.Add(interactObjectNames.PHONE, new InteractItem(interactObjectNames.PHONE, "Dezinformačný mobil", ItemCategory.PICKABLE, ItemState.DISABLED, null));
 
@@ -80,10 +81,12 @@ public class ItemManagerController : MonoBehaviour
 
             case ItemCategory.PICKABLE:
                 pickItem(interactItem.objectName);
+                messageManager.hideMessage();
                 break;
 
             case ItemCategory.ENABLER:
                 enableItem(interactItem.objectName);
+                messageManager.hideMessage();
                 break;
         }
     }
@@ -104,7 +107,7 @@ public class ItemManagerController : MonoBehaviour
         Help.ActivateOltarChild(objectName); //place item on pillar. Spawn items to the game
         items[objectName].state = ItemState.REMOVED;
 
-        if (HaveAllOltarsBeenActivated()) { artefact.TriggerDestruction(); }
+        if (HaveAllOltarsBeenActivated()) { artefact.TriggerDestruction(); } // end the game
     }
 
     private void pickItem(string objectName)
@@ -143,7 +146,7 @@ public class ItemManagerController : MonoBehaviour
 
     private void disableLasers(string primaryItemName)
     {
-       var lasers = GameObject.Find(primaryItemName + nameSpacesStrings.Lasers);
+       var lasers = GameObject.Find(primaryItemName + nameSpacesStrings.Lasers); // getLasers which are paired to object of power
         
        if(lasers == null) { print("no such lasers");  return; }
 

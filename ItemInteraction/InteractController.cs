@@ -28,7 +28,7 @@ public class InteractController : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.E))
         {
-            if (itemInRange != null && itemInRange.state == ItemState.ENABLED) 
+            if (itemInRange != null && itemInRange.state == ItemState.ENABLED) // is item enabled
             {
                 if(itemInRange.category == ItemCategory.READABLE)
                 {
@@ -43,10 +43,11 @@ public class InteractController : MonoBehaviour
         }
     }
 
-    private void ZaHando() // ruka. Evaluates wheter player is touching interactable object or not
+    private void ZaHando() // The Hand. Evaluates wheter player is touching interactable object or not
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 2f))
+        //Debug.DrawRay(transform.position + transform.forward*0.5f, transform.forward, Color.red);
+        if (Physics.Raycast(transform.position + transform.forward * 0.5f, transform.forward, out hit, 3f))
         {
             touchingObject(hit.collider.gameObject);
         } else
@@ -59,10 +60,12 @@ public class InteractController : MonoBehaviour
     {
         itemInRange = itemManager.getItem(objectInRange.name);
         
-
-        if (itemInRange != null)
+        if (itemInRange != null) // item can be interacted with
         {
             messagePanel.displayMessage(itemInRange);
+        } else
+        {
+            messagePanel.hideMessage();
         }
     }
 
