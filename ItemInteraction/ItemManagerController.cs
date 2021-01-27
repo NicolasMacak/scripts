@@ -20,10 +20,10 @@ public class ItemManagerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        initializeAllItems();       
+        InitializeAllItems();       
     }
 
-    private void initializeAllItems()
+    private void InitializeAllItems()
     {
         // Items of power
         items.Add(interactObjectNames.SYRINGE, new InteractItem(interactObjectNames.SYRINGE, "Zahodena vakcina", ItemCategory.PICKABLE, ItemState.DISABLED, null));
@@ -53,7 +53,7 @@ public class ItemManagerController : MonoBehaviour
         items.Add(interactObjectNames.NOTEBottle, new InteractItem(interactObjectNames.NOTEBottle, "Vodka s bromhexinom"));
     }
 
-    public InteractItem getItem(string name)
+    public InteractItem GetItem(string name)
     {
        if (items.TryGetValue(name, out InteractItem item))
         {
@@ -64,9 +64,9 @@ public class ItemManagerController : MonoBehaviour
         return null;
     }
     
-    public void interactWithItem(InteractItem interactItem)
+    public void InteractWithItem(InteractItem interactItem)
     {
-        if (!isDemandItemOwned(interactItem.demandItem)) // item is now owned
+        if (!IsDemandItemOwned(interactItem.demandItem)) // required demand item item is now owned
         {
             return;
         }
@@ -76,19 +76,19 @@ public class ItemManagerController : MonoBehaviour
         switch (interactItem.category)
         {
             case ItemCategory.OLTAR:
-                interactWithOltar(interactItem.objectName);
+                InteractWithOltar(interactItem.objectName);
                 break;
 
             case ItemCategory.PICKABLE:
-                pickItem(interactItem.objectName);
-                messageManager.hideMessage();
+                PickItem(interactItem.objectName);       
                 break;
 
             case ItemCategory.ENABLER:
-                enableItem(interactItem.objectName);
-                messageManager.hideMessage();
+                EnableItem(interactItem.objectName);
                 break;
         }
+
+        messageManager.hideMessage(); // remove info about interaction when interaction is over
     }
 
     /// <summary>
@@ -96,13 +96,13 @@ public class ItemManagerController : MonoBehaviour
     /// </summary>
     /// <param name="demandItemName"></param>
     /// <returns></returns>
-    public bool isDemandItemOwned(string demandItemName)
+    public bool IsDemandItemOwned(string demandItemName)
     {
         return demandItemName != null && items.ContainsKey(demandItemName) ? items[demandItemName].state == ItemState.USABLE : true;
     }
 
   
-    private void interactWithOltar(string objectName)
+    private void InteractWithOltar(string objectName)
     {
         Help.ActivateOltarChild(objectName); //place item on pillar. Spawn items to the game
         items[objectName].state = ItemState.REMOVED;
@@ -110,7 +110,7 @@ public class ItemManagerController : MonoBehaviour
         if (HaveAllOltarsBeenActivated()) { artefact.TriggerDestruction(); } // end the game
     }
 
-    private void pickItem(string objectName)
+    private void PickItem(string objectName)
     {
         items[objectName].state = ItemState.USABLE;
         Destroy(GameObject.Find(objectName));
@@ -124,27 +124,27 @@ public class ItemManagerController : MonoBehaviour
             inventoryHUD.MakeOwned(objectName);
             respawnController.setCheckPoint(objectName);
 
-            if (!isNakabotActivated()) { ActivateNakabot(); }
+            if (!IsNakabotActivated()) { ActivateNakabot(); } // active nakabot after first object of power is picked
         }
     }
 
-    private void enableItem(string enablerObjectName)
+    private void EnableItem(string enablerObjectName) // makes some object enabled, item used to do this is removed
     {
         var itemToEnable = enablerObjectName.Replace(nameSpacesStrings.Enabler, "");
         items[itemToEnable].state = ItemState.ENABLED; // enable item to pickup
         items[enablerObjectName].state = ItemState.REMOVED; // prevent from using again
 
-        disableLasers(itemToEnable);
+        DisableLasers(itemToEnable);
     }
 
-    private bool HaveAllOltarsBeenActivated()
+    private bool HaveAllOltarsBeenActivated() // when this function returns true, game is over
     {
         return items[interactObjectNames.SyringeOltar].state == ItemState.REMOVED &&
                items[interactObjectNames.BottleOltar].state == ItemState.REMOVED &&
                items[interactObjectNames.PhoneOltar].state == ItemState.REMOVED;
     }
 
-    private void disableLasers(string primaryItemName)
+    private void DisableLasers(string primaryItemName) // Called after enabler is used
     {
        var lasers = GameObject.Find(primaryItemName + nameSpacesStrings.Lasers); // getLasers which are paired to object of power
         

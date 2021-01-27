@@ -6,12 +6,12 @@ public static class Help
 {
     
 
-    public static string GetOltarChildName(string oltarName)
+    public static string GetOltarChildName(string oltarName) // Based on oltar name, return oltard children. (Smoke to be activated)
     {
         return Constants.nameSpacesStrings.Oltar + oltarName.Replace(Constants.nameSpacesStrings.Oltar, "");
     }
 
-    public static GameObject FindChild(this GameObject parent, string name)
+    public static GameObject FindChild(this GameObject parent, string name) // Find child of game object. Used to activate object which are not activated
     {
         Transform[] trs = parent.GetComponentsInChildren<Transform>(true);
         foreach (Transform t in trs)
@@ -24,7 +24,7 @@ public static class Help
         return null;
     }
 
-    public static List<Vector3> returnPositionsOfChildrens(string parentName)
+    public static List<Vector3> ReturnPositionsOfChildrens(string parentName) // used to get Wandering points
     {
         var parent = GameObject.Find(parentName);
         var positionsToReturn = new List<Vector3>();
@@ -41,9 +41,7 @@ public static class Help
         return positionsToReturn;
     }
 
-    // public static pickRandomElement() { }
-
-    public static void ActivateOltarChild(string oltarName)
+    public static void ActivateOltarChild(string oltarName) // used when player puts object of power to oltar
     {
         GameObject oltarChild = FindChild(GameObject.Find(oltarName), Help.GetOltarChildName(oltarName));
 
@@ -51,7 +49,7 @@ public static class Help
         oltarChild.SetActive(true);
     }
 
-    public static void ChangeAudioState(AudioState audioState)
+    public static void ChangeAudioState(AudioState audioState) // paused and unpaused audio
     {
         var allAudioSources = Object.FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
 
@@ -70,19 +68,19 @@ public static class Help
     /// <summary>
     /// Stops time
     /// </summary>
-    public static void StarPlatinumZaWarudo()
+    public static void StarPlatinumZaWarudo() // Stops time and paused audio
     {
         Time.timeScale = 0; // stop game while reading
         ChangeAudioState(AudioState.Pause);
     }
 
-    public static void TimeHasBegunToMoveAgain()
+    public static void TimeHasBegunToMoveAgain() // time flows again and audio is unpaused
     {
         Time.timeScale = 1;
         ChangeAudioState(AudioState.Play);
     }
 
-    public static void ActivateNakabot()
+    public static void ActivateNakabot() // removes nakabot object from the table and activates the real nakabot
     {
         var nakabot = FindChild(GameObject.Find("Enemy"), "Nakabot");
         nakabot.SetActive(true);
@@ -91,7 +89,7 @@ public static class Help
         nakabotToRemove.SetActive(false);
     }
 
-    public static bool isNakabotActivated()
+    public static bool IsNakabotActivated() // checks if nakabot is activated. Used to not activate him again
     {
         var nakabot = FindChild(GameObject.Find("Enemy"), "Nakabot");
         return nakabot.activeSelf;

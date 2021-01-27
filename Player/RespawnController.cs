@@ -17,14 +17,7 @@ public class RespawnController : MonoBehaviour
         checkpoint = startLocation.transform.position;
     }
 
-    private IEnumerator ach()
-    {
-        yield return new WaitForSeconds(2);
-        KillPlayer();
-        print(transform.position);
-    }
-
-    public void KillPlayer()
+    public void KillPlayer() // make blackscrean and teleport player to last checkpoint
     {
         BlackScreenPanel.TriggerBlackScreen();
         characterController.enabled = false;

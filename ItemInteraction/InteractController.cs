@@ -24,7 +24,7 @@ public class InteractController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ZaHando();
+        ZaHando(); // The Hand of player
 
         if (Input.GetKeyUp(KeyCode.E))
         {
@@ -32,11 +32,11 @@ public class InteractController : MonoBehaviour
             {
                 if(itemInRange.category == ItemCategory.READABLE)
                 {
-                    isPlayerReading = isPlayerReading ? noteManager.hideNote() : noteManager.displayNote(itemInRange.objectName); // switch between reading state
+                    isPlayerReading = isPlayerReading ? noteManager.HideNote() : noteManager.DisplayNote(itemInRange.objectName); // switch between reading state
                 }
                 else
                 {
-                    itemManager.interactWithItem(itemInRange);
+                    itemManager.InteractWithItem(itemInRange);
                 }
 
             }            
@@ -58,7 +58,7 @@ public class InteractController : MonoBehaviour
 
     private void touchingObject(GameObject objectInRange)
     {
-        itemInRange = itemManager.getItem(objectInRange.name);
+        itemInRange = itemManager.GetItem(objectInRange.name);
         
         if (itemInRange != null) // item can be interacted with
         {

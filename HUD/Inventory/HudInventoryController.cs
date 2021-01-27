@@ -19,16 +19,9 @@ public class HudInventoryController : MonoBehaviour
         icons.Add(interactObjectNames.SYRINGE, syringe);
         icons.Add(interactObjectNames.BOTTLE, bottle);
         icons.Add(interactObjectNames.PHONE, phone);
-
-        //MakeOwned(interactObjectNames.SYRINGE);
     }
 
-    private void Update()
-    {
-        //MakeOwned(interactObjectNames.SYRINGE);
-    }
-
-    public void UnlockIcon(string item)
+    public void UnlockIcon(string item) // removes lock when player pickups card of given object of power
     {
         var itemIcon = icons.ContainsKey(item) ? icons[item] : null;
 
@@ -41,7 +34,7 @@ public class HudInventoryController : MonoBehaviour
         itemIcon.RemoveLock();
     }
 
-    public void MakeOwned(string item)
+    public void MakeOwned(string item) // increases alpha of image when player picks up object of power
     {
         var itemIcon = icons.ContainsKey(item) ? icons[item] : null;
 
@@ -51,6 +44,6 @@ public class HudInventoryController : MonoBehaviour
             return;
         }
 
-        itemIcon.setMaxAlpha();
+        itemIcon.SetMaxAlpha();
     }
 }

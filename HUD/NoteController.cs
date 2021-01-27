@@ -15,12 +15,12 @@ public class NoteController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        initNotes();
+        InitNotes();
         this.gameObject.SetActive(false);
         note.text = "";
     }
 
-    private void initNotes()
+    private void InitNotes()
     {
         notes.Add(interactObjectNames.NOTEMission, Notes.Mission);
         notes.Add(interactObjectNames.NOTENakabot, Notes.Nakabot);
@@ -29,7 +29,7 @@ public class NoteController : MonoBehaviour
         notes.Add(interactObjectNames.NOTEPhone, Notes.Phone);
     }
 
-    private string getNote(string noteName)
+    private string GetNote(string noteName)
     {
         var note = notes.ContainsKey(noteName) ? notes[noteName] : "";
 
@@ -37,10 +37,10 @@ public class NoteController : MonoBehaviour
     }
 
     /// <summary>Displays note for user</summary>
-    public bool displayNote(string noteName)
+    public bool DisplayNote(string noteName) 
     {
         this.gameObject.SetActive(true);
-        note.text = getNote(noteName);
+        note.text = GetNote(noteName);
 
         StarPlatinumZaWarudo(); // stops time
         playerSoundManager.PlayClip(SoundName.Read);
@@ -48,7 +48,7 @@ public class NoteController : MonoBehaviour
         return true;
     }
 
-    public bool hideNote()
+    public bool HideNote()
     {
         this.gameObject.SetActive(false);
         TimeHasBegunToMoveAgain(); // time flows again

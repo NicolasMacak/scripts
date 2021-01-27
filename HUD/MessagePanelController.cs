@@ -6,15 +6,11 @@ using static InteractItem;
 
 public class MessagePanelController : MonoBehaviour
 {
-    //class messages
-    //{
-    //  public const string PICKUP = "Zobrať (E)";
-    //  public const string READ = "Prečítať (E)";
-    //}
     TextMessagesManager textMessageManager = new TextMessagesManager();
 
     public TextMeshProUGUI message;
     public ItemManagerController inventory;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,8 +25,8 @@ public class MessagePanelController : MonoBehaviour
 
         string textToDisplay = "";
 
-        textToDisplay = interactItem.title;
-        textToDisplay += addSecondRowDetail(interactItem);
+        textToDisplay = interactItem.title; // first row is title of object
+        textToDisplay += addSecondRowDetail(interactItem); // in second are addition instructions
         
         message.text = textToDisplay;
     }
@@ -43,13 +39,13 @@ public class MessagePanelController : MonoBehaviour
         {
             textToReturn += Constants.textSuffixes.READ; // item to read
         }
-        else if (!inventory.isDemandItemOwned(interactItem.demandItem) || interactItem.state == ItemState.DISABLED)
+        else if (!inventory.IsDemandItemOwned(interactItem.demandItem) || interactItem.state == ItemState.DISABLED) // cant interact because item is not owned or item is disabled
         {
-            textToReturn += textMessageManager.getDisabledMessage(interactItem.objectName); // cant interact because item is not owned
+            textToReturn += textMessageManager.getDisabledMessage(interactItem.objectName); 
         }
-        else if (interactItem.state == ItemState.ENABLED)
+        else if (interactItem.state == ItemState.ENABLED) // item can be interacted with
         {
-            textToReturn += textMessageManager.getEnabledMessage(interactItem.objectName); // all good
+            textToReturn += textMessageManager.getEnabledMessage(interactItem.objectName); 
         }
 
         return System.Environment.NewLine + textToReturn;
@@ -58,6 +54,5 @@ public class MessagePanelController : MonoBehaviour
     public void hideMessage()
     {
         this.gameObject.SetActive(false);
-
     }
 }

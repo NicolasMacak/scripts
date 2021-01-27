@@ -53,7 +53,7 @@ public class BlackscreenController : MonoBehaviour
         canvasGroup.alpha = 1;
     }
 
-    private IEnumerator TransitionToTransparent()
+    private IEnumerator TransitionToTransparent() // from blackscreen to normal
     {
         float counter = 0f;
 
@@ -67,7 +67,7 @@ public class BlackscreenController : MonoBehaviour
         
     }
 
-    private IEnumerator TransitionToBlack()
+    private IEnumerator TransitionToBlack() // makes black screen slowly appear
     {
         float counter = 0f;
 

@@ -18,7 +18,7 @@ public class EnemySoundController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = this.GetComponent<AudioSource>(); //gameObject.AddComponent<AudioSource>();
+        audioSource = this.GetComponent<AudioSource>();
         PlayClipLoop(EnemySoundName.Wandering);
         
     }
@@ -62,7 +62,7 @@ public class EnemySoundController : MonoBehaviour
 
     public void PlayClipOnce(EnemySoundName soundName)
     {
-        if (soundName == currentClip) { return; } // if song has not been changed, return
+        if (soundName == currentClip) { return; } // if song has not been changed, return. Issue of calling this function could be resolved with coroutine. Did not know at the time
 
         audioSource.loop = false;
         PlayClip(EnemySoundName.Running);      

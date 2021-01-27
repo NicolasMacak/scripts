@@ -5,11 +5,11 @@ using static Constants;
 
 public class TextMessagesManager
 {
-    // Start is called before the first frame update
+    
     Dictionary<string, string> disabledMessages = new Dictionary<string, string>();
     Dictionary<string, string> enabledMessages = new Dictionary<string, string>();
-    Dictionary<string, string> usableMessages = new Dictionary<string, string>();
-
+    
+    // messages used to inform player about item which he is about to interact with
     public TextMessagesManager()
     {
         enabledMessages.Add(interactObjectNames.SYRINGE,  textSuffixes.PICK_UP);
@@ -39,8 +39,8 @@ public class TextMessagesManager
         disabledMessages.Add(interactObjectNames.PHONE, "Lasery su zapnute");
 
         disabledMessages.Add(interactObjectNames.SyringeOltar, "Nemam vakcinu");
-        disabledMessages.Add(interactObjectNames.PhoneOltar, "Nemam vakcinu");
-        disabledMessages.Add(interactObjectNames.BottleOltar, "Nemam vodku");
+        disabledMessages.Add(interactObjectNames.PhoneOltar, "Nemam mobil");
+        disabledMessages.Add(interactObjectNames.BottleOltar, "Nemam vodku s bromhexinom");
 
 
 
@@ -59,10 +59,4 @@ public class TextMessagesManager
 
         return enabledMessages.ContainsKey(objectName) ? enabledMessages[objectName] : "";
     }
-
-    /// <summary>Returns message for usable items</summary>
-    //public string getUsableMessage(string objectName)
-    //{
-    //    return usableMessages.ContainsKey(objectName) ? usableMessages[objectName] : "";
-    //}
 }

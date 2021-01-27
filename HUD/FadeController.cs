@@ -10,12 +10,12 @@ public class FadeController : MonoBehaviour
     private CanvasGroup canvasGroup;
 
     public float Duration = 1;
-    public CanvasGroup extertCanvasGroup;
+    public CanvasGroup externalCanvasGroup;
     void Start()
     {
-        canvasGroup = extertCanvasGroup == null ? GetComponent<CanvasGroup>() : extertCanvasGroup;
+        canvasGroup = externalCanvasGroup == null ? GetComponent<CanvasGroup>() : externalCanvasGroup; // if external canvasGroup is not present, use canvasGroup on this object
         
-        if(extertCanvasGroup == null)
+        if(externalCanvasGroup == null)
         StartCoroutine(DoFade());
     }
 

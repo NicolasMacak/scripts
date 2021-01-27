@@ -23,7 +23,6 @@ public class SoundController : MonoBehaviour
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
-        //PlayClip(SoundName.Pickup);
     }
 
     [System.Serializable]

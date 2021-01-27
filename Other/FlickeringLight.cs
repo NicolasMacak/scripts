@@ -25,14 +25,12 @@ public class FlickeringLight : MonoBehaviour
         
     }
 
-     private IEnumerator FlickerLight()
+     private IEnumerator FlickerLight() // duration of light flickering is randomly seleced from given interval
     {
-        //this.gameObject.GetComponent<Light>().enabled = false;
         light.enabled = false;
         delayInterval = Random.Range(randomDelayFrom, randomDelayTo);
         yield return new WaitForSeconds(delayInterval);
 
-        //this.gameObject.GetComponent<Light>().enabled = true;
         light.enabled = true;
         delayInterval = Random.Range(randomDelayFrom, randomDelayTo);
         yield return new WaitForSeconds(delayInterval);

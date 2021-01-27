@@ -25,26 +25,24 @@ public class ArtefactForceFieldController : MonoBehaviour
 
     private IEnumerator DestroyArtefact() 
     {
-        StartCoroutine(ScaleToZero());
+        StartCoroutine(ScaleToZero()); // shrink artefact
 
         while (transform.localScale.x > 0)
         {
             yield return null;
         }
 
-        explosionParticles.SetActive(true);
-        yield return new WaitForSeconds(1.8f);
-        Destroy(GameObject.Find("Explosion"));
-        //Destroy(this.gameObject);
+        explosionParticles.SetActive(true); // trigger explosion
+        yield return new WaitForSeconds(1.8f); // wait
+        Destroy(GameObject.Find("Explosion")); // destroy explosion
 
-        blackscreenManager.TriggerGameOver();
-        //StartCoroutine(MakeExplostionEffect()); wanted to use this function but coroutine could not reach its end
+        blackscreenManager.TriggerGameOver(); // end the game
 
     }
 
     // Update is called once per frame
 
-    private IEnumerator ScaleToZero()
+    private IEnumerator ScaleToZero() // shrink artefact
     {
         float counter = 0f;
 

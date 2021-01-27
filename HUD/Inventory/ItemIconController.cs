@@ -5,16 +5,6 @@ using UnityEngine.UI;
 
 public class ItemIconController : MonoBehaviour
 {
-    //private Image icon;
-    //private Image locka;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //icon = GetImage("Icon");
-        //locka = GetImage("Lock");
-        //print(icon.color);
-    }
 
     private Image GetImage(string name)
     {
@@ -39,7 +29,7 @@ public class ItemIconController : MonoBehaviour
         lockIcon.color = tmpColor;
     }
 
-    public void setMaxAlpha()
+    public void SetMaxAlpha()
     {
         var icon = GetImage("Icon");
 
